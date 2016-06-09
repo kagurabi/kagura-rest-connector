@@ -1,6 +1,12 @@
+# docker box definition
 box: java
+
+# Build definition
 build:
+  # The steps that will be executed on build
   steps:
+    # A step that executes `gradle build` command
     - script:
-        name: maven
-        code: mvn clean package test deploy -X -e
+        name: mvn
+        code: |
+          mvn clean package deploy
