@@ -1,6 +1,8 @@
 # docker box definition
 box: java
 
+dev:
+
 # Build definition
 build:
   # The steps that will be executed on build
