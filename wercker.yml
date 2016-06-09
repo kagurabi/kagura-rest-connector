@@ -11,4 +11,4 @@ build:
     - script:
         name: mvn
         code: |
-          mvn clean package deploy
+          mvn clean package
