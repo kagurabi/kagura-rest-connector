@@ -2,4 +2,4 @@ box: maven:latest
 build:
   steps:
     - xenoterracide/maven:
-        goals: clean package test
+        goals: clean package test deploy
