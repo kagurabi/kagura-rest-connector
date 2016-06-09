@@ -18,7 +18,7 @@ deploy:
     - script:
       name: create settings.xml
       code: |-
-        mkdir ~/.m2
+        mkdir -p ~/.m2
         cat > ~/.m2/settings.xml <<ENDL
         <?xml version="1.0" encoding="UTF-8"?>
         <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
