@@ -2,4 +2,5 @@ box: java
 build:
   steps:
     - script:
-        mvn clean package test deploy
+        name: maven
+        code: mvn clean package test deploy -X -e
