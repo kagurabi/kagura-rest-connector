@@ -1,5 +1,5 @@
 box: java
 build:
   steps:
-    - xenoterracide/maven:
-        goals: clean package test deploy
+    - script:
+        mvn clean package test deploy
