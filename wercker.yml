@@ -12,9 +12,10 @@ build:
         name: mvn
         code: |
           mvn clean package
+# Deploy definition
 deploy:
   box: maven
-  maven:
+  mavendeploy:
   - script:
     name: create settings.xml
     code: |-
