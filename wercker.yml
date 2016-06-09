@@ -1,4 +1,4 @@
-box: _/maven
+box: java
 build:
   steps:
     - xenoterracide/maven:
