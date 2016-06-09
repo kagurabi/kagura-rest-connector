@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.kagurabi</groupId>
+    <artifactId>kagura</artifactId>
+    <version>1.10-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Kagura-bom</name>
+
+    <properties>
+        <maven-resources-plugin.version>2.4.2</maven-resources-plugin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.6</java.version>
+        <slf4j.version>1.7.5</slf4j.version>
+        <log4j.version>1.2.17</log4j.version>
+        <junit.version>4.8.2</junit.version>
+        <hamcrest.version>1.3</hamcrest.version>
+        <commons-lang3.version>3.1</commons-lang3.version>
+        <commons-collections.version>3.2.1</commons-collections.version>
+        <commons-io.version>2.4</commons-io.version>
+        <guava.version>14.0.1</guava.version>
+        <commons-beanutils.version>1.8.3</commons-beanutils.version>
+        <groovy.version>2.1.2</groovy.version>
+        <maven-bundle-plugin.version>2.3.7</maven-bundle-plugin.version>
+    </properties>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+</project>
