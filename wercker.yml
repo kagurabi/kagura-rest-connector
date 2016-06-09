@@ -34,4 +34,7 @@ deploy:
             </servers>
         </settings>
         ENDL
+    - script:
+      name: Do deploy
+      code: |-
         mvn deploy
