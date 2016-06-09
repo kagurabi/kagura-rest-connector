@@ -12,3 +12,25 @@ build:
         name: mvn
         code: |
           mvn clean package
+deploy:
+  box: maven
+  maven:
+  - script:
+    name: create settings.xml
+    code: |-
+      mkdir ~/.m2
+      cat > ~/.m2/settings.xml <<ENDL
+      <?xml version="1.0" encoding="UTF-8"?>
+      <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+          <servers>
+              <server>
+                  <id>ossrh</id>
+                  <username>$OSSRHUSER</username>
+                  <password>$OSSRHPASS</password>
+              </server>
+          </servers>
+      </settings>
+      ENDL
+      mvn deploy
