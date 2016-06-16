@@ -1,0 +1,4 @@
+com.base2.kagura.core.report.configmodel.FakeReportConfig
+com.base2.kagura.core.report.configmodel.GroovyReportConfig
+com.base2.kagura.core.report.configmodel.JDBCReportConfig
+com.base2.kagura.core.report.configmodel.JNDIReportConfig

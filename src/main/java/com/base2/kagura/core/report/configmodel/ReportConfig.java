@@ -21,6 +21,7 @@ import com.base2.kagura.core.report.connectors.ReportConnector;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 
 import java.util.List;
 import java.util.Map;
@@ -38,12 +39,7 @@ import java.util.Map;
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = JDBCReportConfig.class, name = "JDBC"),
-        @JsonSubTypes.Type(value = JNDIReportConfig.class, name = "JNDI"),
-        @JsonSubTypes.Type(value = GroovyReportConfig.class, name = "Groovy"),
-        @JsonSubTypes.Type(value = FakeReportConfig.class, name = "Fake")
-})
+@JsonTypeIdResolver(ReportConfigTypeResolver.class)
 public abstract class ReportConfig {
     String reportId;
     List<ParamConfig> paramConfig;
