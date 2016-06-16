@@ -28,7 +28,12 @@ import com.base2.kagura.core.report.connectors.ReportConnector;
 public class GroovyReportConfig extends ReportConfig {
     String groovy;
 
-    /**
+	@Override
+	public String getReportType() {
+		return "Groovy";
+	}
+
+	/**
      * Groovey script to run. Values provided to groovy:
      List<Map<String, Object>> rows
      List<ColumnDef> columns

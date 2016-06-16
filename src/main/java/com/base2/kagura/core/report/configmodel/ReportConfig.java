@@ -79,6 +79,13 @@ public abstract class ReportConfig {
     }
 
     /**
+     * The report type identifier
+     * @return
+     */
+    @JsonIgnore
+    abstract public java.lang.String getReportType();
+
+    /**
      * @see #getReportId()
      */
     public void setReportId(String reportId) {

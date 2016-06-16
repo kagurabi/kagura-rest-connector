@@ -35,7 +35,12 @@ public class JNDIReportConfig extends FreeMarkerSQLReportConfig {
         return new JNDIDataReportConnector(this);
     }
 
-    /**
+	@Override
+	public String getReportType() {
+		return "JNDI";
+	}
+
+	/**
      * JNDI URL.
      * @return
      */

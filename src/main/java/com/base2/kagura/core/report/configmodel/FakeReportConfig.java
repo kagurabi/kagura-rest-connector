@@ -32,7 +32,12 @@ public class FakeReportConfig extends ReportConfig {
     List<Map<String, Object>> rows;
     Map<String, ParamToColumnRule> paramRules; //*<
 
-    /**
+	@Override
+	public String getReportType() {
+		return "Fake";
+	}
+
+	/**
      * {@inheritDoc}
      */
     @Override

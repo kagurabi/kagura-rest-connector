@@ -1,8 +1,6 @@
 package com.base2.kagura.core.report.configmodel;
 
-import java.util.Iterator;
-import java.util.ServiceConfigurationError;
-import java.util.ServiceLoader;
+import java.util.*;
 
 /**
  * Created by arran on 16/06/2016.
@@ -23,19 +21,17 @@ public class ReportConfigTypeService {
 	}
 
 
-	public Class<? extends ReportConfig> getType(String type) {
+	public Map<String, Class> getMap() {
+		Map<String, Class> result = new HashMap<String, Class>();
 		try {
 			Iterator<ReportConfig> reportConfigIterator = loader.iterator();
 			while (reportConfigIterator.hasNext()) {
-				Class<? extends ReportConfig> d = reportConfigIterator.next().getClass();
-				String matchString = type.toUpperCase() + "ReportConfig".toUpperCase();
-				if (d.getSimpleName().toUpperCase().equals(matchString)) {
-					return d;
-				}
+				ReportConfig d = reportConfigIterator.next();
+				result.put(d.getReportType().toUpperCase(), d.getClass());
 			}
 		} catch (ServiceConfigurationError serviceError) {
 			serviceError.printStackTrace();
 		}
-		return null;
+		return result;
 	}
 }

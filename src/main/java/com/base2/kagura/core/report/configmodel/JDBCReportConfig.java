@@ -31,7 +31,12 @@ public class JDBCReportConfig extends FreeMarkerSQLReportConfig {
     String password;
     private String classLoaderPath;
 
-    /**
+	@Override
+	public String getReportType() {
+		return "JDBC";
+	}
+
+	/**
      * {@inheritDoc}
      * @return
      */
