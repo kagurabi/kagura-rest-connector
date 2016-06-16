@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.kagurabi</groupId>
-    <artifactId>Kagura-bom</artifactId>
+    <artifactId>kagura-bom</artifactId>
     <version>1.10-SNAPSHOT</version>
     <packaging>pom</packaging>
 
