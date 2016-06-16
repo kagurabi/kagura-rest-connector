@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.kagurabi</groupId>
-    <artifactId>kagura-bom</artifactId>
+    <artifactId>Kagura-bom</artifactId>
     <version>1.10-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -94,7 +94,7 @@
             </dependency>
             <dependency>
                 <groupId>com.kagurabi.shared</groupId>
-                <artifactId>kagura-resources</artifactId>
+                <artifactId>Kagura-resources</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
