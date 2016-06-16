@@ -5,10 +5,6 @@ box: maven
 build:
   steps:
     - script:
-      name: cat settings.xml
-      code: |
-        cat ~/.m2/settings.xml
-    - script:
         name: mvn
         code: |
           mvn clean package test -X -e
