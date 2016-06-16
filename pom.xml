@@ -4,13 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.kagurabi.shared</groupId>
-    <artifactId>kagura-resources</artifactId>
+    <artifactId>Kagura-resources</artifactId>
     <packaging>bundle</packaging>
     <version>1.10-SNAPSHOT</version>
 
     <parent>
         <groupId>com.kagurabi</groupId>
-        <artifactId>kagura-bom</artifactId>
+        <artifactId>Kagura-bom</artifactId>
         <version>1.10-SNAPSHOT</version>
     </parent>
 
