@@ -11,7 +11,7 @@
 
     <parent>
         <groupId>com.kagurabi</groupId>
-        <artifactId>kagura-bom</artifactId>
+        <artifactId>Kagura-bom</artifactId>
         <version>1.10-SNAPSHOT</version>
     </parent>
 
