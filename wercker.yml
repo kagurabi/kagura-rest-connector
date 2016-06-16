@@ -1,22 +1,21 @@
 # docker box definition
 box: maven
 
-dev:
-  # The steps that will be executed on build
+# Build definition
+build:
   steps:
-    # A step that executes `gradle build` command
     - script:
         name: getdepends
         code: |
           mvn dependency:get -DrepoUrl=https://oss.sonatype.org/content/repositories/snapshots -Dartifact=com.kagurabi.shared:reporting-core:1.10-SNAPSHOT
-
-# Build definition
-build:
+    - script:
+      name: cat settings.xml
+      code: |
+        cat ~/.m2/settings.xml
     - script:
         name: mvn
         code: |
           mvn clean package test -X -e
-# Deploy definition
 deploy:
   steps:
     - script:
