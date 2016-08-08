@@ -1,4 +1,7 @@
 type: "DynamoDB"
+endpoint: "http://localhost:8000"
+region: "us-west-2"
+action: query
 
 columns:
   - { name: title, label: Movie title }
@@ -8,19 +11,27 @@ columns:
 dynamo:
   query:
     table: "Movies"
-    projection: [ "#Year", "title", "info.genres", "info.actors[0]" ]
+    projection: [ "#nameYear", "title", "info.genres", "info.actors[0]" ]
     conditions:
+      or:
+#      - expression: "#nameYear = :valueYear"
       - and:
-        - expression: "<#if param.Year?has_content>#nameYear = :valueYear</#if>"
-        - expression: "<#if param.StartLetter?has_content AND param.EndLetter?has_content>title between :valueStartLetter and :valueEndLetter</#if>"
-        - or:
-          - expression: "#nameYear = :valueYear"
+        - expression: "#nameYear = :valueYear"
+#        - expression: "title between :valueStartLetter and :valueEndLetter"
+#      and:
+#      - expression: "<#if param.Year?has_content>#nameYear = :valueYear</#if>"
+#      - expression: "<#if param.StartLetter?has_content AND param.EndLetter?has_content>title between :valueStartLetter and :valueEndLetter</#if>"
+#      - or:
+#        - expression: "#nameYear = :valueYear"
     names:
       nameYear: year
     values:
-      valueYear: "${method.value(param.Year)}"
-      valueStartLetter: "${method.value(param.StartLetter)}"
-      valueEndLetter: "${method.value(param.EndLetter)}"
+      valueYear: 2001
+#      valueStartLetter: "A"
+#      valueEndLetter: "C"
+#      valueYear: "${method.value(param.Year)}"
+#      valueStartLetter: "${method.value(param.StartLetter)}"
+#      valueEndLetter: "${method.value(param.EndLetter)}"
 
 paramConfig:
   - { type: String, id: paramYear , name: "Year", help: "", placeholder: "" }

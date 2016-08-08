@@ -13,6 +13,7 @@ public class DynamoDbReportConfig extends ReportConfig {
 	String awsSecretAccessKey;
 	String region;
 	String action;
+	String endpoint;
 	DynamoQueryContainer dynamo;
 
 	@Override
@@ -65,4 +66,11 @@ public class DynamoDbReportConfig extends ReportConfig {
 		this.dynamo = dynamo;
 	}
 
+	public String getEndpoint() {
+		return endpoint;
+	}
+
+	public void setEndpoint(String endpoint) {
+		this.endpoint = endpoint;
+	}
 }

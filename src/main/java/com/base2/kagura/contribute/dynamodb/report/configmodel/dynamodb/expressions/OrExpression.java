@@ -17,6 +17,6 @@ public class OrExpression extends ConditionalExpression {
 
 	@JsonCreator
 	public OrExpression(ArrayList<DynamoExpression> expressions) {
-		super(expressions);
+		super("or", expressions);
 	}
 }

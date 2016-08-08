@@ -19,6 +19,6 @@ public class AndExpression extends ConditionalExpression {
 
 	@JsonCreator
 	public AndExpression(ArrayList<DynamoExpression> expressions) {
-		super(expressions);
+		super("and", expressions);
 	}
 }

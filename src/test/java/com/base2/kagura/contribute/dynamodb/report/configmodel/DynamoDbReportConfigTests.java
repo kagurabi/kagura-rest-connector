@@ -24,7 +24,7 @@ public class DynamoDbReportConfigTests {
 		ReportConfig config = objectMapper.readValue(this.getClass().getResourceAsStream("/reports/syntaxTest/reportConfig.yaml"), ReportConfig.class);
 //		DynamoDbReportConfig config = objectMapper.readValue(this.getClass().getResourceAsStream("/reports/syntaxTest/reportConfig.yaml"), DynamoDbReportConfig.class);
 		Assert.assertThat(config.getClass(), IsCompatibleType.typeCompatibleWith(DynamoDbReportConfig.class));
-		LOG.debug(objectMapper.writeValueAsString(config));
+//		LOG.debug(objectMapper.writeValueAsString(config));
 	}
 
 	@Test
