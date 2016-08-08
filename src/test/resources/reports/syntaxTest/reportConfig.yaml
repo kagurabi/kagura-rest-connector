@@ -1,0 +1,32 @@
+type: "DynamoDB"
+
+columns:
+  - { name: title, label: Movie title }
+  - { name: info.genres, label: Genres }
+  - { name: "info.actors[0]", label: Lead Actor }
+
+dynamo:
+  query:
+    table: "Movies"
+    projection: [ "#Year", "title", "info.genres", "info.actors[0]" ]
+    conditions:
+      - and:
+        - expression: "<#if param.Year?has_content>#nameYear = :valueYear</#if>"
+        - expression: "<#if param.StartLetter?has_content AND param.EndLetter?has_content>title between :valueStartLetter and :valueEndLetter</#if>"
+        - or:
+          - expression: "#nameYear = :valueYear"
+    names:
+      nameYear: year
+    values:
+      valueYear: "${method.value(param.Year)}"
+      valueStartLetter: "${method.value(param.StartLetter)}"
+      valueEndLetter: "${method.value(param.EndLetter)}"
+
+paramConfig:
+  - { type: String, id: paramYear , name: "Year", help: "", placeholder: "" }
+  - { type: String, id: paramStartLetter , name: "Start Letter", help: "", placeholder: "" }
+  - { type: String, id: paramEndLetter , name: "End Letter", help: "", placeholder: "" }
+
+extraOptions:
+  reportName: "Movies by Letter and Year"
+  directory: "MovieDB"
