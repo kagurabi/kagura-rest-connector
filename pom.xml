@@ -204,7 +204,9 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
-                        <Export-Package>com.base2.kagura.core*;version=${project.version}</Export-Package>
+                        <Export-Package>com.base2.kagura.core*;version=${project.version},
+                            com.base2.kagura.core.report.configmodel*;version=${project.version}
+                            com.base2.kagura.core.report.connectors*;version=${project.version}</Export-Package>
                         <Import-Package>*</Import-Package>
                         <DynamicImport-Package>com.mysql.jdbc;com.mysql.jdbc.*;*</DynamicImport-Package>
                     </instructions>
