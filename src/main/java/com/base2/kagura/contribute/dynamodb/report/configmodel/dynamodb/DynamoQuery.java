@@ -70,12 +70,6 @@ public class DynamoQuery {
 				spec = spec.withFilterExpression(this.getConditions().toString());
 			}
 		}
-		if (this.getValues() != null) {
-			spec = spec.withValueMap(createValueMap());
-		}
-		if (this.getNames() != null) {
-			spec = spec.withNameMap(createNameMap());
-		}
 		return spec;
 
 	}
@@ -90,30 +84,6 @@ public class DynamoQuery {
 				spec = spec.withKeyConditionExpression(this.getConditions().toString());
 			}
 		}
-		if (this.getValues() != null) {
-			spec = spec.withValueMap(createValueMap());
-		}
-		if (this.getNames() != null) {
-			spec = spec.withNameMap(createNameMap());
-		}
 		return spec;
-	}
-
-	private Map<String, Object> createValueMap() {
-		Map<String, Object> result = new ValueMap();
-		for (Map.Entry<String, Object> each : this.getValues().entrySet()) {
-			Object value = each.getValue(); // TODO freemarker
-			result.put(":" + each.getKey(), value);
-		}
-		return result;
-	}
-
-	private Map<String, String> createNameMap() {
-		Map<String, String> result = new NameMap();
-		for (Map.Entry<String, String> each : this.getNames().entrySet()) {
-			String value = each.getValue(); // TODO freemarker
-			result.put("#" + each.getKey(), value);
-		}
-		return result;
 	}
 }

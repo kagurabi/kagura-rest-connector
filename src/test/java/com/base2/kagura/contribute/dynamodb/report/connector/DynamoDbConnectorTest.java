@@ -18,6 +18,8 @@ import com.base2.kagura.contribute.dynamodb.report.configmodel.DynamoDbReportCon
 import com.base2.kagura.contribute.dynamodb.report.configmodel.DynamoDbReportConfigTests;
 import com.base2.kagura.core.report.configmodel.ReportConfig;
 import com.base2.kagura.core.report.connectors.ReportConnector;
+import com.base2.kagura.core.report.parameterTypes.ParamConfig;
+import com.base2.kagura.core.report.parameterTypes.SingleParamConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.sun.deploy.util.SessionState;
@@ -35,10 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by arran on 8/08/2016.
@@ -87,7 +86,15 @@ public class DynamoDbConnectorTest {
 		Assert.assertThat(config.getClass(), IsCompatibleType.typeCompatibleWith(DynamoDbReportConfig.class));
 		ReportConnector reportConnector = config.getReportConnector();
 		reportConnector.setPage(1);
-		reportConnector.run(null);
+		for (ParamConfig each : reportConnector.getParameterConfig()) {
+			if ("paramStartLetter".equals(each.getId())) {
+				if (each instanceof SingleParamConfig) {
+					LOG.debug("Set value on " + each.getName());
+					((SingleParamConfig) each).setValue("C");
+				}
+			}
+		}
+		reportConnector.run(new HashMap<String, Object>());
 		Assert.assertThat(reportConnector.getRows(), IsNot.not(IsNull.<List<Map<String,Object>>>nullValue()));
 		LOG.info("Listing results:");
 		int i = 0;

@@ -27,8 +27,8 @@ dynamo:
       nameYear: year
     values:
       valueYear: 2001
-      valueStartLetter: "A"
-      valueEndLetter: "S"
+      valueStartLetter: 'return paramStartLetter != null ? paramStartLetter : "A"'
+      valueEndLetter: '"S"'
 #      valueYear: "${method.value(param.Year)}"
 #      valueStartLetter: "${method.value(param.StartLetter)}"
 #      valueEndLetter: "${method.value(param.EndLetter)}"
