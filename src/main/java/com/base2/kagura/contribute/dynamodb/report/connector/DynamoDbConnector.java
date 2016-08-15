@@ -5,11 +5,15 @@ import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.regions.RegionUtils;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.*;
+import com.amazonaws.services.dynamodbv2.document.internal.PageIterable;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
 import com.base2.kagura.contribute.dynamodb.report.configmodel.DynamoDbReportConfig;
+import com.base2.kagura.core.authentication.AuthenticationProvider;
 import com.base2.kagura.core.report.connectors.ReportConnector;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.management.Query;
 import java.util.ArrayList;
@@ -20,6 +24,8 @@ import java.util.Map;
  * Created by arran on 16/06/2016.
  */
 public class DynamoDbConnector extends ReportConnector {
+	private static final Logger LOG = LoggerFactory.getLogger(DynamoDbConnector.class);
+
 	AmazonDynamoDBClient client;
 	String action;
 	private List<Map<String, Object>> rows;
@@ -88,8 +94,24 @@ public class DynamoDbConnector extends ReportConnector {
 		Table table = dynamoDB.getTable(this.table);
 		ItemCollection<QueryOutcome> results = table.query(querySpec.withMaxPageSize(this.getPageLimit()));
 		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>(results.getAccumulatedItemCount());
-		for (Item each : results) {
-			result.add(each.asMap());
+		PageIterable<Item, QueryOutcome> e = results.pages();
+		int i = 0;
+		for (Page<Item, QueryOutcome> page : e) {
+			LOG.debug("Page: " + i);
+			LOG.debug("Page size: " + page.size());
+			if (!page.hasNextPage()) {
+				break;
+			}
+			if (i == getPage()) {
+				LOG.debug("Getting items for page");
+				for (Item each : page) {
+					result.add(each.asMap());
+				}
+			}
+			if (i >= getPage()) {
+				break;
+			}
+			i++;
 		}
 		return result;
 	}

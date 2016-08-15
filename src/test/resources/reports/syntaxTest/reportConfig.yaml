@@ -2,7 +2,7 @@ type: "DynamoDB"
 endpoint: "http://localhost:8000"
 region: "us-west-2"
 action: query
-
+pageLimit: 5
 columns:
   - { name: title, label: Movie title }
   - { name: info.genres, label: Genres }
@@ -17,7 +17,7 @@ dynamo:
 #      - expression: "#nameYear = :valueYear"
       - and:
         - expression: "#nameYear = :valueYear"
-#        - expression: "title between :valueStartLetter and :valueEndLetter"
+        - expression: "title between :valueStartLetter and :valueEndLetter"
 #      and:
 #      - expression: "<#if param.Year?has_content>#nameYear = :valueYear</#if>"
 #      - expression: "<#if param.StartLetter?has_content AND param.EndLetter?has_content>title between :valueStartLetter and :valueEndLetter</#if>"
@@ -27,8 +27,8 @@ dynamo:
       nameYear: year
     values:
       valueYear: 2001
-#      valueStartLetter: "A"
-#      valueEndLetter: "C"
+      valueStartLetter: "A"
+      valueEndLetter: "S"
 #      valueYear: "${method.value(param.Year)}"
 #      valueStartLetter: "${method.value(param.StartLetter)}"
 #      valueEndLetter: "${method.value(param.EndLetter)}"

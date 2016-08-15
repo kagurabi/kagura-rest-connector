@@ -86,8 +86,15 @@ public class DynamoDbConnectorTest {
 		ReportConfig config = objectMapper.readValue(this.getClass().getResourceAsStream("/reports/syntaxTest/reportConfig.yaml"), ReportConfig.class);
 		Assert.assertThat(config.getClass(), IsCompatibleType.typeCompatibleWith(DynamoDbReportConfig.class));
 		ReportConnector reportConnector = config.getReportConnector();
+		reportConnector.setPage(1);
 		reportConnector.run(null);
 		Assert.assertThat(reportConnector.getRows(), IsNot.not(IsNull.<List<Map<String,Object>>>nullValue()));
+		LOG.info("Listing results:");
+		int i = 0;
+		for (Map<String, Object> each : reportConnector.getRows()) {
+			i++;
+			LOG.info(i + ". " + each.get("title"));
+		}
 	}
 
 }
