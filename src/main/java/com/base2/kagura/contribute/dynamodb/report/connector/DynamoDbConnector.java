@@ -82,9 +82,24 @@ public class DynamoDbConnector extends ReportConnector {
 		DynamoDB dynamoDB = new DynamoDB(client);
 		Table table = dynamoDB.getTable(this.table);
 		ItemCollection<ScanOutcome> results = table.scan(scanSpec);
-		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>(results.getAccumulatedScannedCount());
-		for (Item each : results) {
-			result.add(each.asMap());
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>(getPageLimit());
+		int i = 0;
+		for (Page<Item, ScanOutcome> page : results.pages()) {
+			LOG.debug("Page: " + i);
+			LOG.debug("Page size: " + page.size());
+			if (!page.hasNextPage()) {
+				break;
+			}
+			if (i == getPage()) {
+				LOG.debug("Getting items for page");
+				for (Item each : page) {
+					result.add(each.asMap());
+				}
+			}
+			if (i >= getPage()) {
+				break;
+			}
+			i++;
 		}
 		return result;
 	}
@@ -93,7 +108,7 @@ public class DynamoDbConnector extends ReportConnector {
 		DynamoDB dynamoDB = new DynamoDB(client);
 		Table table = dynamoDB.getTable(this.table);
 		ItemCollection<QueryOutcome> results = table.query(querySpec.withMaxPageSize(this.getPageLimit()));
-		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>(results.getAccumulatedItemCount());
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>(getPageLimit());
 		PageIterable<Item, QueryOutcome> e = results.pages();
 		int i = 0;
 		for (Page<Item, QueryOutcome> page : e) {
