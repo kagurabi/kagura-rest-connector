@@ -114,7 +114,6 @@
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Export-Package>com.base2.kagura.contribute.dynamodb*;version=${project.version}</Export-Package>
                         <Import-Package>*</Import-Package>
-                        <DynamicImport-Package>com.mysql.jdbc;com.mysql.jdbc.*;*</DynamicImport-Package>
                     </instructions>
                 </configuration>
             </plugin>
