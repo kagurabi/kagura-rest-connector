@@ -13,6 +13,7 @@ import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
 import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.base2.kagura.contribute.dynamodb.report.configmodel.DynamoDbReportConfig;
+import com.base2.kagura.contribute.dynamodb.report.configmodel.dynamodb.DynamoQuery;
 import com.base2.kagura.core.authentication.AuthenticationProvider;
 import com.base2.kagura.core.report.connectors.ReportConnector;
 import com.base2.kagura.core.report.parameterTypes.ParamConfig;
@@ -39,8 +40,7 @@ public class DynamoDbConnector extends ReportConnector {
 	private List<Map<String, Object>> rows;
 	private Map<String, String> names;
 	private Map<String, Object> values;
-	private ScanSpec scanSpec;
-	private QuerySpec querySpec;
+	private DynamoQuery query;
 	String table;
 
 	/**
@@ -71,15 +71,8 @@ public class DynamoDbConnector extends ReportConnector {
 			this.action = "query";
 		}
 		if (reportConfig.getDynamo().getQuery() != null) {
-			if (this.action.equals("scan")) {
-				scanSpec = reportConfig.getDynamo().getQuery().toScanSpec();
-			} else {
-				querySpec = reportConfig.getDynamo().getQuery().toQuerySpec();
-			}
 			this.table = reportConfig.getDynamo().getQuery().getTable();
-		} else {
-			querySpec = null;
-			scanSpec = null;
+			this.query = reportConfig.getDynamo().getQuery().getConditions().t
 		}
 		this.names = reportConfig.getDynamo().getQuery().getNames();
 		this.values = reportConfig.getDynamo().getQuery().getValues();
