@@ -213,9 +213,17 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Version>${project.version}</Bundle-Version>
-                        <Export-Package>com.base2.kagura.core*;version=${project.version},
-                            com.base2.kagura.core.report.configmodel*;version=${project.version}
-                            com.base2.kagura.core.report.connectors*;version=${project.version}</Export-Package>
+                        <Export-Package>com.base2.kagura.core.*,
+                            com.base2.kagura.core.report.core.authentication.*,
+                            com.base2.kagura.core.report.core.authentication.model.*,
+                            com.base2.kagura.core.report.configmodel.*,
+                            com.base2.kagura.core.report.configmodel.parts.*,
+                            com.base2.kagura.core.report.connectors.*,
+                            com.base2.kagura.core.report.freemarker.*,
+                            com.base2.kagura.core.report.freemarker.parameterTypes.*,
+                            com.base2.kagura.core.report.freemarker.parameterTypes.datasources.*,
+                            com.base2.kagura.core.storage.*
+                        </Export-Package>
                         <Import-Package>*</Import-Package>
                         <DynamicImport-Package>com.mysql.jdbc;com.mysql.jdbc.*;*</DynamicImport-Package>
                     </instructions>
