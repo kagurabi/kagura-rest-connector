@@ -7,14 +7,12 @@ import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.regions.RegionUtils;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.*;
-import com.amazonaws.services.dynamodbv2.document.internal.PageIterable;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
 import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.base2.kagura.contribute.dynamodb.report.configmodel.DynamoDbReportConfig;
 import com.base2.kagura.contribute.dynamodb.report.configmodel.dynamodb.DynamoQuery;
-import com.base2.kagura.core.authentication.AuthenticationProvider;
 import com.base2.kagura.core.report.connectors.ReportConnector;
 import com.base2.kagura.core.report.parameterTypes.ParamConfig;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -22,7 +20,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.management.Query;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +37,8 @@ public class DynamoDbConnector extends ReportConnector {
 	private List<Map<String, Object>> rows;
 	private Map<String, String> names;
 	private Map<String, Object> values;
-	private DynamoQuery query;
-	String table;
+	private DynamoQuery dynamoQuery
+		;
 
 	/**
 	 * Does a shallow copy of the necessary reportConfig values. Initializes the error structure.
@@ -71,8 +68,7 @@ public class DynamoDbConnector extends ReportConnector {
 			this.action = "query";
 		}
 		if (reportConfig.getDynamo().getQuery() != null) {
-			this.table = reportConfig.getDynamo().getQuery().getTable();
-			this.query = reportConfig.getDynamo().getQuery().getConditions().t
+			this.dynamoQuery = reportConfig.getDynamo().getQuery();
 		}
 		this.names = reportConfig.getDynamo().getQuery().getNames();
 		this.values = reportConfig.getDynamo().getQuery().getValues();
@@ -111,8 +107,8 @@ public class DynamoDbConnector extends ReportConnector {
 
 	protected List<Map<String, Object>> scan(Map<String, Object> extra) {
 		DynamoDB dynamoDB = new DynamoDB(client);
-		Table table = dynamoDB.getTable(this.table);
-		ScanSpec scanSpec = this.scanSpec.withNameMap(createNameMap());
+		Table table = dynamoDB.getTable(dynamoQuery.getTable());
+		ScanSpec scanSpec = this.dynamoQuery.toScanSpec().withNameMap(createNameMap());
 		Interpreter bsh = null;
 		try {
 			bsh = getInterpreter(extra);
@@ -171,8 +167,8 @@ public class DynamoDbConnector extends ReportConnector {
 
 	protected List<Map<String, Object>> query(Map<String, Object> extra) {
 		DynamoDB dynamoDB = new DynamoDB(client);
-		Table table = dynamoDB.getTable(this.table);
-		QuerySpec querySpec = this.querySpec.withNameMap(createNameMap());
+		Table table = dynamoDB.getTable(this.dynamoQuery.getTable());
+		QuerySpec querySpec = this.dynamoQuery.toQuerySpec().withNameMap(createNameMap());
 		Interpreter bsh = null;
 		try {
 			bsh = getInterpreter(extra);
