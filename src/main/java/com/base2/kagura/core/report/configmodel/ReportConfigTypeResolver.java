@@ -1,6 +1,7 @@
 package com.base2.kagura.core.report.configmodel;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.DatabindContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -61,5 +62,14 @@ public class ReportConfigTypeResolver implements TypeIdResolver {
 		}
 
 		throw new IllegalStateException("cannot find Report Config type '" + type + "'");
+	}
+
+	@Override
+	public JavaType typeFromId(DatabindContext context, String id) {
+		if (typeMap.containsKey(id.toUpperCase())) {
+			return context.constructSpecializedType(mBaseType, typeMap.get(id.toUpperCase()));
+		}
+
+		throw new IllegalStateException("cannot find Report Config type '" + id + "'");
 	}
 }
