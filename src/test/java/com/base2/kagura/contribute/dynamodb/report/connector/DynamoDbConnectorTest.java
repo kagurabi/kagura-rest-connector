@@ -1,19 +1,9 @@
 package com.base2.kagura.contribute.dynamodb.report.connector;
 
-import com.amazonaws.AmazonWebServiceClient;
-import com.amazonaws.ClientConfiguration;
-import com.amazonaws.ClientConfigurationFactory;
-import com.amazonaws.auth.AWSSessionCredentials;
-import com.amazonaws.auth.AWSSessionCredentialsProvider;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.RegionUtils;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-import com.amazonaws.services.dynamodbv2.document.Table;
-import com.amazonaws.services.dynamodbv2.document.TableCollection;
-import com.amazonaws.services.dynamodbv2.model.ListTablesRequest;
-import com.amazonaws.services.dynamodbv2.model.ListTablesResult;
+import com.amazonaws.services.dynamodbv2.local.embedded.DynamoDBEmbedded;
+import com.amazonaws.services.dynamodbv2.local.shared.access.AmazonDynamoDBLocal;
+import com.amazonaws.services.dynamodbv2.model.*;
 import com.base2.kagura.contribute.dynamodb.report.configmodel.DynamoDbReportConfig;
 import com.base2.kagura.contribute.dynamodb.report.configmodel.DynamoDbReportConfigTests;
 import com.base2.kagura.core.report.configmodel.ReportConfig;
@@ -27,8 +17,7 @@ import org.hamcrest.core.IsCollectionContaining;
 import org.hamcrest.core.IsNot;
 import org.hamcrest.core.IsNull;
 import org.hamcrest.object.IsCompatibleType;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,9 +32,7 @@ public class DynamoDbConnectorTest {
 
 	@Test
 	public void ListTablesTest() throws IOException {
-		AmazonDynamoDBClient dynamoDB = new AmazonDynamoDBClient();
-		dynamoDB.setSignerRegionOverride("us-west-2");
-		dynamoDB.setEndpoint("http://localhost:8000/");
+		AmazonDynamoDB dynamoDB = setupDB();
 		ListTablesResult tables = dynamoDB.listTables();
 
 		LOG.info("Listing table names");
@@ -55,11 +42,28 @@ public class DynamoDbConnectorTest {
 		}
 		Assert.assertThat(tables.getTableNames(), IsCollectionContaining.hasItem("Movies"));
 	}
+
+	private AmazonDynamoDB setupDB() {
+		System.setProperty("sqlite4java.library.path", "native-libs");
+		AmazonDynamoDBLocal dynamoDBserver = DynamoDBEmbedded.create();
+		AmazonDynamoDB amazonDynamoDB = dynamoDBserver.amazonDynamoDB();
+		amazonDynamoDB.createTable(new CreateTableRequest()
+			.withTableName("Movies")
+			.withKeySchema(new KeySchemaElement("year", "HASH"))
+			.withKeySchema(new KeySchemaElement("title", "RANGE"))
+			.withAttributeDefinitions(new AttributeDefinition("year", "N"))
+			.withAttributeDefinitions(new AttributeDefinition("title", "S"))
+			.withProvisionedThroughput(new ProvisionedThroughput(10l,10l))
+		);
+		return amazonDynamoDB;
+	}
+
 	@Test
 	public void ReportConnectorConvertTest() throws IOException {
 		ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
 		ReportConfig config = objectMapper.readValue(this.getClass().getResourceAsStream("/reports/syntaxTest/reportConfig.yaml"), ReportConfig.class);
 		Assert.assertThat(config.getClass(), IsCompatibleType.typeCompatibleWith(DynamoDbReportConfig.class));
+		((DynamoDbReportConfig)config).setRegion("");
 		ReportConnector reportConnector = config.getReportConnector();
 		Assert.assertThat(reportConnector.getClass(), IsCompatibleType.typeCompatibleWith(DynamoDbConnector.class));
 	}
@@ -69,7 +73,6 @@ public class DynamoDbConnectorTest {
 		ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
 		ReportConfig config = objectMapper.readValue(this.getClass().getResourceAsStream("/reports/syntaxTest/reportConfig.yaml"), ReportConfig.class);
 		Assert.assertThat(config.getClass(), IsCompatibleType.typeCompatibleWith(DynamoDbReportConfig.class));
-		ReportConnector reportConnector = config.getReportConnector();
 		Assert.assertThat(((DynamoDbReportConfig)config).getDynamo().getQuery().getConditions().toString(), IsIn.isIn(Arrays.asList(
 			"#nameYear = :valueYear and title between :valueStartLetter and :valueEndLetter",
 			"#nameYear = :valueYear or (#nameYear = :valueYear and title between :valueStartLetter and :valueEndLetter)"
@@ -78,9 +81,17 @@ public class DynamoDbConnectorTest {
 	@Test
 	public void ReportConnectorConnectTest() throws IOException {
 		ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
-		ReportConfig config = objectMapper.readValue(this.getClass().getResourceAsStream("/reports/syntaxTest/reportConfig.yaml"), ReportConfig.class);
-		Assert.assertThat(config.getClass(), IsCompatibleType.typeCompatibleWith(DynamoDbReportConfig.class));
-		ReportConnector reportConnector = config.getReportConnector();
+		ReportConfig configRaw = objectMapper.readValue(this.getClass().getResourceAsStream("/reports/syntaxTest/reportConfig.yaml"), ReportConfig.class);
+		Assert.assertThat(configRaw.getClass(), IsCompatibleType.typeCompatibleWith(DynamoDbReportConfig.class));
+		DynamoDbReportConfig config = (DynamoDbReportConfig)configRaw;
+
+		AmazonDynamoDB dynamoDB = setupDB();
+
+		config.setRegion("");
+		config.setEndpoint("");
+
+		ReportConnector reportConnector = config.getReportConnector(dynamoDB);
+
 		reportConnector.setPage(1);
 		for (ParamConfig each : reportConnector.getParameterConfig()) {
 			if ("paramStartLetter".equals(each.getId())) {

@@ -11,3 +11,4 @@ target
 war-rest/overlays/
 settings.xml
 profile.xml
+/native-libs

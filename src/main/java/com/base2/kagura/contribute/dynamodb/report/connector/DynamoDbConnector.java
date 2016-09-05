@@ -4,7 +4,9 @@ import bsh.EvalError;
 import bsh.Interpreter;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.regions.Region;
 import com.amazonaws.regions.RegionUtils;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
@@ -32,7 +34,7 @@ import java.util.HashMap;
 public class DynamoDbConnector extends ReportConnector {
 	private static final Logger LOG = LoggerFactory.getLogger(DynamoDbConnector.class);
 
-	AmazonDynamoDBClient client;
+	AmazonDynamoDB client;
 	String action;
 	private List<Map<String, Object>> rows;
 	private Map<String, String> names;
@@ -52,15 +54,31 @@ public class DynamoDbConnector extends ReportConnector {
 		} else {
 			client = new AmazonDynamoDBClient(new DefaultAWSCredentialsProviderChain());
 		}
+		setup(reportConfig);
+	}
+
+	/**
+	 * Does a shallow copy of the necessary reportConfig values. Initializes the error structure.
+	 *
+	 * @param reportConfig
+	 */
+	public DynamoDbConnector(DynamoDbReportConfig reportConfig, AmazonDynamoDB client) {
+		super(reportConfig);
+		this.client = client;
+		setup(reportConfig);
+	}
+
+	private void setup(DynamoDbReportConfig reportConfig) {
 		if (StringUtils.isNotBlank(reportConfig.getRegion())) {
-			if (RegionUtils.getRegion(reportConfig.getRegion()) != null) {
-				client.setRegion(RegionUtils.getRegion(reportConfig.getRegion()));
+			Region region = RegionUtils.getRegion(reportConfig.getRegion());
+			if (region != null) {
+				client.setRegion(region);
 			}
 		}
 		if (StringUtils.isNotBlank(reportConfig.getEndpoint())) {
 			client.setEndpoint(reportConfig.getEndpoint());
-			if (StringUtils.isNotBlank(reportConfig.getRegion())) {
-				client.setSignerRegionOverride(reportConfig.getRegion());
+			if (StringUtils.isNotBlank(reportConfig.getRegion()) && client instanceof AmazonDynamoDBClient) {
+				((AmazonDynamoDBClient)client).setSignerRegionOverride(reportConfig.getRegion());
 			}
 		}
 		this.action = reportConfig.getAction();
