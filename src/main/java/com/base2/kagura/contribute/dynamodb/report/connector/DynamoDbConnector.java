@@ -36,6 +36,7 @@ public class DynamoDbConnector extends ReportConnector {
 
 	AmazonDynamoDB client;
 	String action;
+	String beanScript;
 	private List<Map<String, Object>> rows;
 	private Map<String, String> names;
 	private Map<String, Object> values;
@@ -90,6 +91,7 @@ public class DynamoDbConnector extends ReportConnector {
 		}
 		this.names = reportConfig.getDynamo().getQuery().getNames();
 		this.values = reportConfig.getDynamo().getQuery().getValues();
+		this.beanScript = reportConfig.getBeanScript();
 	}
 
 	public Map<String, Object> createValueMap(Interpreter bsh) {
@@ -175,6 +177,9 @@ public class DynamoDbConnector extends ReportConnector {
 
 	public Interpreter getInterpreter(Map<String, Object> extra) throws EvalError, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Interpreter bsh = new Interpreter();
+		if (StringUtils.isNotBlank(this.beanScript)) {
+			bsh.eval(this.beanScript);
+		}
 		bsh.set("extra", extra);
 		if (extra != null) {
 			for (Map.Entry<String, Object> each : extra.entrySet()) {

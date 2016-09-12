@@ -16,6 +16,7 @@ public class DynamoDbReportConfig extends ReportConfig {
 	String region;
 	String action;
 	String endpoint;
+	String beanScript;
 	DynamoQueryContainer dynamo;
 
 	@Override
@@ -78,5 +79,13 @@ public class DynamoDbReportConfig extends ReportConfig {
 
 	public void setEndpoint(String endpoint) {
 		this.endpoint = endpoint;
+	}
+
+	public String getBeanScript() {
+		return beanScript;
+	}
+
+	public void setBeanScript(String beanScript) {
+		this.beanScript = beanScript;
 	}
 }

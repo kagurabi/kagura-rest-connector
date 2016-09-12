@@ -21,8 +21,27 @@ dynamo:
       nameYear: year
     values:
       valueYear: 2001
-      valueStartLetter: 'return paramStartLetter != null ? paramStartLetter : "A"'
-      valueEndLetter: 'return paramEndLetter != null ? paramEndLetter : "S"'
+      valueStartLetter: 'return defaultIfBlank(paramStartLetter,"A")'
+      valueEndLetter: 'return defaultIfBlank(paramEndLetter,"S")'
+
+beanScript: |
+      boolean isBlank(String cs) {
+          int strLen;
+          if (cs == null || (strLen = cs.length()) == 0) {
+              return true;
+          }
+          for (int i = 0; i < strLen; i++) {
+              if (Character.isWhitespace(cs.charAt(i)) == false) {
+                  return false;
+              }
+          }
+          return true;
+      }
+
+      String defaultIfBlank(String str, String defaultStr) {
+          return isBlank(str) ? defaultStr : str;
+      }
+
 
 paramConfig:
   - { type: String, id: paramYear , name: "Year", help: "", placeholder: "" }
