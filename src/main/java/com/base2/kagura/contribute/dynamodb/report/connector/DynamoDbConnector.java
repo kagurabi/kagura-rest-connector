@@ -99,6 +99,7 @@ public class DynamoDbConnector extends ReportConnector {
 			if (value instanceof String) {
 				try {
 					value = bsh.eval((String)each.getValue());
+					bsh.set(each.getKey(), value);
 				} catch (EvalError ex) {
 					errors.add(ex.getMessage());
 					ex.printStackTrace();
@@ -126,19 +127,27 @@ public class DynamoDbConnector extends ReportConnector {
 	protected List<Map<String, Object>> scan(Map<String, Object> extra) {
 		DynamoDB dynamoDB = new DynamoDB(client);
 		Table table = dynamoDB.getTable(dynamoQuery.getTable());
-		ScanSpec scanSpec = this.dynamoQuery.toScanSpec().withNameMap(createNameMap());
 		Interpreter bsh = null;
 		try {
 			bsh = getInterpreter(extra);
 		} catch (EvalError ex) {
 			ex.printStackTrace();
 			this.errors.add(ex.getMessage());
+			return null;
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
+		}
+		ScanSpec scanSpec;
+		try {
+			scanSpec = this.dynamoQuery.toScanSpec(bsh).withNameMap(createNameMap());
+		} catch (EvalError evalError) {
+			this.errors.add(evalError.getMessage());
+			evalError.printStackTrace();
+			return null;
 		}
 		scanSpec = scanSpec.withValueMap(createValueMap(bsh));
 		ItemCollection<ScanOutcome> results = table.scan(scanSpec.withMaxPageSize(this.getPageLimit()));
@@ -164,7 +173,7 @@ public class DynamoDbConnector extends ReportConnector {
 		return result;
 	}
 
-	private Interpreter getInterpreter(Map<String, Object> extra) throws EvalError, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+	public Interpreter getInterpreter(Map<String, Object> extra) throws EvalError, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Interpreter bsh = new Interpreter();
 		bsh.set("extra", extra);
 		if (extra != null) {
@@ -186,19 +195,27 @@ public class DynamoDbConnector extends ReportConnector {
 	protected List<Map<String, Object>> query(Map<String, Object> extra) {
 		DynamoDB dynamoDB = new DynamoDB(client);
 		Table table = dynamoDB.getTable(this.dynamoQuery.getTable());
-		QuerySpec querySpec = this.dynamoQuery.toQuerySpec().withNameMap(createNameMap());
 		Interpreter bsh = null;
+		QuerySpec querySpec;
 		try {
 			bsh = getInterpreter(extra);
 		} catch (EvalError ex) {
 			ex.printStackTrace();
 			this.errors.add(ex.getMessage());
+			return null;
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
+		}
+		try {
+			querySpec = this.dynamoQuery.toQuerySpec(bsh).withNameMap(createNameMap());
+		} catch (EvalError evalError) {
+			this.errors.add(evalError.getMessage());
+			evalError.printStackTrace();
+			return null;
 		}
 		querySpec = querySpec.withValueMap(createValueMap(bsh));
 		ItemCollection<QueryOutcome> results = table.query(querySpec.withMaxPageSize(this.getPageLimit()));

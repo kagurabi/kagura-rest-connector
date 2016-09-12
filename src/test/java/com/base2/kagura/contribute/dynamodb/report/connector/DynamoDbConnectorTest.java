@@ -1,6 +1,9 @@
 package com.base2.kagura.contribute.dynamodb.report.connector;
 
+import bsh.EvalError;
+import bsh.Interpreter;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.local.embedded.DynamoDBEmbedded;
 import com.amazonaws.services.dynamodbv2.local.shared.access.AmazonDynamoDBLocal;
 import com.amazonaws.services.dynamodbv2.model.*;
@@ -27,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.CharacterIterator;
 import java.util.*;
@@ -88,11 +92,15 @@ public class DynamoDbConnectorTest {
 	}
 
 	@Test
-	public void ReportConnectorQueryToStringTest() throws IOException {
+	public void ReportConnectorQueryEvalTest() throws Exception {
 		ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
 		ReportConfig config = objectMapper.readValue(this.getClass().getResourceAsStream("/reports/syntaxTest/reportConfig.yaml"), ReportConfig.class);
 		Assert.assertThat(config.getClass(), IsCompatibleType.typeCompatibleWith(DynamoDbReportConfig.class));
-		Assert.assertThat(((DynamoDbReportConfig)config).getDynamo().getQuery().getConditions().toString(), IsIn.isIn(Arrays.asList(
+		Interpreter bsh = null;
+		DynamoDbConnector reportConnector = (DynamoDbConnector) config.getReportConnector();
+		bsh = reportConnector.getInterpreter(new HashMap<>());
+		reportConnector.createValueMap(bsh);
+		Assert.assertThat(((DynamoDbReportConfig)config).getDynamo().getQuery().getConditions().Eval(bsh), IsIn.isIn(Arrays.asList(
 			"#nameYear = :valueYear and title between :valueStartLetter and :valueEndLetter",
 			"#nameYear = :valueYear or (#nameYear = :valueYear and title between :valueStartLetter and :valueEndLetter)"
 		)));

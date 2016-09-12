@@ -1,5 +1,7 @@
 package com.base2.kagura.contribute.dynamodb.report.configmodel.dynamodb;
 
+import bsh.EvalError;
+import bsh.Interpreter;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
 import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
@@ -60,28 +62,30 @@ public class DynamoQuery {
 		this.values = values;
 	}
 
-	public ScanSpec toScanSpec() {
+	public ScanSpec toScanSpec(Interpreter bsh) throws EvalError {
 		ScanSpec spec = new ScanSpec();
 		if (this.getProjection() != null) {
 			spec = spec.withProjectionExpression(StringUtils.join(this.getProjection(), ", "));
 		}
 		if (this.getConditions() != null) {
-			if (StringUtils.isNotBlank(this.getConditions().toString())) {
-				spec = spec.withFilterExpression(this.getConditions().toString());
+			String value = this.getConditions().Eval(bsh);
+			if (StringUtils.isNotBlank(value)) {
+				spec = spec.withFilterExpression(value);
 			}
 		}
 		return spec;
 
 	}
 
-	public QuerySpec toQuerySpec() {
+	public QuerySpec toQuerySpec(Interpreter bsh) throws EvalError {
 		QuerySpec spec = new QuerySpec();
 		if (this.getProjection() != null) {
 			spec = spec.withProjectionExpression(StringUtils.join(this.getProjection(), ", "));
 		}
 		if (this.getConditions() != null) {
-			if (StringUtils.isNotBlank(this.getConditions().toString())) {
-				spec = spec.withKeyConditionExpression(this.getConditions().toString());
+			String value = this.getConditions().Eval(bsh);
+			if (StringUtils.isNotBlank(value)) {
+				spec = spec.withKeyConditionExpression(value);
 			}
 		}
 		return spec;

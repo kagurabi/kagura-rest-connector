@@ -1,5 +1,7 @@
 package com.base2.kagura.contribute.dynamodb.report.configmodel.dynamodb.expressions;
 
+import bsh.EvalError;
+import bsh.Interpreter;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -10,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonSubTypes({
 	@JsonSubTypes.Type(value=AndExpression.class, name = "and"),
 	@JsonSubTypes.Type(value=OrExpression.class, name="or"),
-	@JsonSubTypes.Type(value=StringExpression.class, name="expression")
+	@JsonSubTypes.Type(value=StringExpression.class, name="expression"),
+	@JsonSubTypes.Type(value=BeanExpression.class, name="beanExpression")
 })
 public abstract class DynamoExpression {
+	abstract public String Eval(Interpreter bsh) throws EvalError;
 }

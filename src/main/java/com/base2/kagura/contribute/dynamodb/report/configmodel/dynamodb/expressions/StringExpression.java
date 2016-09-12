@@ -1,5 +1,7 @@
 package com.base2.kagura.contribute.dynamodb.report.configmodel.dynamodb.expressions;
 
+import bsh.EvalError;
+import bsh.Interpreter;
 import com.fasterxml.jackson.annotation.*;
 
 /**
@@ -27,7 +29,7 @@ public class StringExpression extends DynamoExpression {
 	}
 
 	@Override
-	public String toString() {
+	public String Eval(Interpreter bsh) throws EvalError {
 		return expression;
 	}
 }

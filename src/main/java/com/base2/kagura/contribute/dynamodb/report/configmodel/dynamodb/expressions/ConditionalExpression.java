@@ -1,5 +1,7 @@
 package com.base2.kagura.contribute.dynamodb.report.configmodel.dynamodb.expressions;
 
+import bsh.EvalError;
+import bsh.Interpreter;
 import com.fasterxml.jackson.annotation.*;
 import org.apache.commons.lang3.StringUtils;
 
@@ -31,12 +33,12 @@ public class ConditionalExpression extends DynamoExpression {
 	}
 
 	@Override
-	public String toString() {
+	public String Eval(Interpreter bsh) throws EvalError {
 		if (expressions == null) return "";
 		List<String> values = new ArrayList<String>(expressions.size());
 		for (DynamoExpression expression : expressions) {
 			if (expression == null) continue;
-			String value = expression.toString();
+			String value = expression.Eval(bsh);
 			if (StringUtils.isBlank(value)) continue;
 			if (expression instanceof ConditionalExpression) {
 				value = "(" + value + ")";
