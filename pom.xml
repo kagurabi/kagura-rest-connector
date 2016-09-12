@@ -28,7 +28,27 @@
             <id>dynamodb-local.s3</id>
             <url>http://dynamodb-local.s3-website-us-west-2.amazonaws.com/release/</url>
         </repository>
+        <repository>
+            <id>kagura-maven</id>
+            <url>s3://maven.kagura.base2.services/maven/</url>
+        </repository>
+        <repository>
+            <id>kagura-maven-snapshot</id>
+            <url>s3://maven.kagura.base2.services/maven-snapshot/</url>
+            <snapshots></snapshots>
+        </repository>
     </repositories>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>kagura-maven</id>
+            <url>s3://maven.kagura.base2.services/maven-snapshot/</url>
+        </snapshotRepository>
+        <repository>
+            <id>kagura-maven</id>
+            <url>s3://maven.kagura.base2.services/maven/</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <!-- scripting -->
@@ -215,6 +235,13 @@
                 </executions>
             </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>org.springframework.build</groupId>
+                <artifactId>aws-maven</artifactId>
+                <version>5.0.0.RELEASE</version>
+            </extension>
+        </extensions>
     </build>
 
     <profiles>
