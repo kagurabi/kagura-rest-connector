@@ -16,6 +16,7 @@
                 <artifactId>Kagura-bom</artifactId>
                 <version>1.10-SNAPSHOT</version>
                 <scope>import</scope>
+                <type>pom</type>
             </dependency>
         </dependencies>
     </dependencyManagement>
