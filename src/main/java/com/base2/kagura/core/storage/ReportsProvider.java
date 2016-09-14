@@ -19,8 +19,6 @@ import com.base2.kagura.core.report.configmodel.ReportConfig;
 import com.base2.kagura.core.report.configmodel.ReportsConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.google.common.io.PatternFilenameFilter;
-import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
