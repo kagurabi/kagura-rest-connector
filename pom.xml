@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>bundle</packaging>
     <version>1.10-SNAPSHOT</version>
-    <groupId>com.kagurabi.shared</groupId>
+    <groupId>com.kagurabi</groupId>
     <artifactId>kagura-core</artifactId>
-    <name>Kagura-core</name>
+    <name>kagura-core</name>
 
     <repositories>
         <repository>
