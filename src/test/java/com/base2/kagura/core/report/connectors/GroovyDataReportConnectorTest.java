@@ -4,6 +4,7 @@ import com.base2.kagura.core.report.configmodel.GroovyReportConfig;
 import com.base2.kagura.core.report.configmodel.parts.ColumnDef;
 import com.base2.kagura.core.report.parameterTypes.ParamConfig;
 import junit.framework.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.HashMap;
  */
 public class GroovyDataReportConnectorTest {
     @Test
+	@Ignore("Disabled importing (removed ivy dependency)")
     public void awsImportTest()
     {
         GroovyDataReportConnector groovyDataReportConnector = new GroovyDataReportConnector(new GroovyReportConfig()

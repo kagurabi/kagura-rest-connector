@@ -72,4 +72,9 @@ public class ReportConfigTypeResolver implements TypeIdResolver {
 
 		throw new IllegalStateException("cannot find Report Config type '" + id + "'");
 	}
+
+	@Override
+	public String getDescForKnownTypeIds() {
+		return "";
+	}
 }

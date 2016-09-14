@@ -36,7 +36,7 @@ import java.util.HashMap;
  */
 public class JDBCDataReportConnectorTest {
 
-    public static final String JDBC = "jdbc:h2:test";
+    public static final String JDBC = "jdbc:h2:./test";
 
     @Test
     public void testFreemarker() throws Exception {
