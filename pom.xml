@@ -9,17 +9,6 @@
     <artifactId>Kagura-dynamodb-connector</artifactId>
     <name>Kagura-dynamodb-connector</name>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>kagura-maven</id>
-            <url>s3://maven.kagura.base2.services/maven-snapshot/</url>
-        </snapshotRepository>
-        <repository>
-            <id>kagura-maven</id>
-            <url>s3://maven.kagura.base2.services/maven/</url>
-        </repository>
-    </distributionManagement>
-
     <repositories>
         <repository>
             <id>dynamodb-local.s3</id>
@@ -70,8 +59,8 @@
 
         <!-- Reporting dependencies -->
         <dependency>
-            <groupId>com.kagurabi.shared</groupId>
-            <artifactId>reporting-core</artifactId>
+            <groupId>com.kagurabi</groupId>
+            <artifactId>kagura-core</artifactId>
         </dependency>
 
         <!-- Testing -->
