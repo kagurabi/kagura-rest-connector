@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.kagurabi.shared</groupId>
+    <groupId>com.kagurabi</groupId>
     <artifactId>kagura-rest-api</artifactId>
     <packaging>bundle</packaging>
     <name>kagura-rest-api</name>
