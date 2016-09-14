@@ -22,7 +22,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Just like hte FileReportsProvider, however in this one, instead of having each report in it's own directory, it's in

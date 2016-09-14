@@ -15,9 +15,9 @@
  */
 package com.base2.kagura.core.report.connectors;
 
+import com.base2.kagura.core.report.configmodel.ReportConfig;
 import com.base2.kagura.core.report.configmodel.parts.ColumnDef;
 import com.base2.kagura.core.report.parameterTypes.ParamConfig;
-import com.base2.kagura.core.report.configmodel.ReportConfig;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -42,6 +42,21 @@ public abstract class ReportConnector implements Serializable {
     protected List<ColumnDef> columns;
     protected List<ParamConfig> parameterConfig;
     protected List<String> errors;
+
+	/**
+	 * Does a shallow copy of the necessary reportConfig values. Initializes the error structure.
+	 *
+	 * @param reportConfig
+	 */
+	protected ReportConnector(ReportConfig reportConfig) {
+		if (reportConfig == null) return;
+		this.columns = reportConfig.getColumns();
+		this.parameterConfig = reportConfig.getParamConfig();
+		this.errors = new ArrayList<String>();
+		if (reportConfig.getPageLimit() != null) {
+			this.pageLimit = reportConfig.getPageLimit();
+		}
+	}
 
     /**
      * A way to fetch the results. Some engines cache, others store.
@@ -93,21 +108,6 @@ public abstract class ReportConnector implements Serializable {
      *              and what ever else is of value to the user.
      */
     protected abstract void runReport(Map<String, Object> extra);
-
-    /**
-     * Does a shallow copy of the necessary reportConfig values. Initializes the error structure.
-     * @param reportConfig
-     */
-    protected ReportConnector(ReportConfig reportConfig) {
-        if (reportConfig == null) return;
-        this.columns = reportConfig.getColumns();
-        this.parameterConfig = reportConfig.getParamConfig();
-        this.errors = new ArrayList<String>();
-        if (reportConfig.getPageLimit() != null)
-        {
-            this.pageLimit = reportConfig.getPageLimit();
-        }
-    }
 
     /**
      * Where errors are stored. Must be manually cleared.

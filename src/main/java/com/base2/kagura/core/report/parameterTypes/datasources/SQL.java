@@ -23,7 +23,6 @@ import org.apache.commons.collections.Transformer;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -34,7 +33,25 @@ import java.util.Map;
  *         Date: 17/12/2013
  */
 public class SQL extends Source {
-    private ReportConfig report;
+	String selectedColumn;
+	private ReportConfig report;
+
+	/**
+	 * Constructor.
+	 */
+	public SQL() {
+	}
+
+	/**
+	 * Reference copying constructor.
+	 *
+	 * @param report         The new report config
+	 * @param selectedColumn The column you wish to extract the values and names from
+	 */
+	public SQL(ReportConfig report, String selectedColumn) {
+		this.report = report;
+		this.selectedColumn = selectedColumn;
+	}
 
     /**
      * Sets the report to be used. No getter is provided so the contents doesn't get serialized.
@@ -43,8 +60,6 @@ public class SQL extends Source {
     public void setReport(ReportConfig report) {
         this.report = report;
     }
-
-    String selectedColumn;
 
     /**
      * Executes the report, selecting the first column OR the column designated to make up the parameters values.
@@ -74,22 +89,6 @@ public class SQL extends Source {
      * @param selectedColumn
      */
     public void setSelectedColumn(String selectedColumn) {
-        this.selectedColumn = selectedColumn;
-    }
-
-    /**
-     * Constructor.
-     */
-    public SQL() {
-    }
-
-    /**
-     * Reference copying constructor.
-     * @param report             The new report config
-     * @param selectedColumn     The column you wish to extract the values and names from
-     * */
-    public SQL(ReportConfig report, String selectedColumn) {
-        this.report = report;
         this.selectedColumn = selectedColumn;
     }
 }

@@ -16,10 +16,9 @@
 package com.base2.kagura.core.report.configmodel;
 
 import com.base2.kagura.core.report.configmodel.parts.ColumnDef;
-import com.base2.kagura.core.report.parameterTypes.ParamConfig;
 import com.base2.kagura.core.report.connectors.ReportConnector;
+import com.base2.kagura.core.report.parameterTypes.ParamConfig;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 
@@ -55,19 +54,19 @@ public abstract class ReportConfig {
         return paramConfig;
     }
 
+	/**
+	 * @see #getParamConfig()
+	 */
+	public void setParamConfig(List<ParamConfig> paramConfig) {
+		this.paramConfig = paramConfig;
+	}
+
     /**
      * Provides the report connector for the engine. The driver of the report. Use this to execute the report.
      * @return
      */
     @JsonIgnore
     abstract public ReportConnector getReportConnector();
-
-    /**
-     * @see #getParamConfig()
-     */
-    public void setParamConfig(List<ParamConfig> paramConfig) {
-        this.paramConfig = paramConfig;
-    }
 
     /**
      * The report identifier, namely the containing directory if using the @see FileConfigProvider
@@ -78,19 +77,19 @@ public abstract class ReportConfig {
         return reportId;
     }
 
+	/**
+	 * @see #getReportId()
+	 */
+	public void setReportId(String reportId) {
+		this.reportId = reportId;
+	}
+
     /**
      * The report type identifier
      * @return
      */
     @JsonIgnore
     abstract public java.lang.String getReportType();
-
-    /**
-     * @see #getReportId()
-     */
-    public void setReportId(String reportId) {
-        this.reportId = reportId;
-    }
 
     /**
      * Get the column configuration of the report. This is GIGO from the report configuration.

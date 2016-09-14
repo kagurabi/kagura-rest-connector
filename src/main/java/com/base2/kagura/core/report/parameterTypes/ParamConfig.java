@@ -23,7 +23,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -48,13 +47,13 @@ import java.util.regex.Pattern;
         @JsonSubTypes.Type(value = DateTimeParamConfig.class, name = "DateTime"),
 })
 public abstract class ParamConfig {
-    String name;
+	protected Boolean required = false;
+	String name;
     String type;
     String help;
     String placeholder;
     private Source from;
     private String id;
-    protected Boolean required = false;
 
     /**
      * Constructor
@@ -255,6 +254,15 @@ public abstract class ParamConfig {
 //        return Arrays.asList();
     }
 
+	/**
+	 * Ignores values set.
+	 *
+	 * @param values
+	 */
+	public void setValues(Collection<Object> values) {
+		// Ignore..
+	}
+
     /**
      * Prepares the parameter's datasource, passing it the extra options and if necessary executing the appropriate
      * code and caching the value.
@@ -265,15 +273,6 @@ public abstract class ParamConfig {
         {
             from.prepareParameter(extra);
         }
-    }
-
-    /**
-     * Ignores values set.
-     * @param values
-     */
-    public void setValues(Collection<Object> values)
-    {
-        // Ignore..
     }
 
     /**
