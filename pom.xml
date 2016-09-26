@@ -14,15 +14,6 @@
             <id>dynamodb-local.s3</id>
             <url>http://dynamodb-local.s3-website-us-west-2.amazonaws.com/release/</url>
         </repository>
-        <repository>
-            <id>kagura-maven</id>
-            <url>s3://maven.kagura.base2.services/maven/</url>
-        </repository>
-        <repository>
-            <id>kagura-maven-snapshot</id>
-            <url>s3://maven.kagura.base2.services/maven-snapshot/</url>
-            <snapshots></snapshots>
-        </repository>
     </repositories>
 
     <distributionManagement>
