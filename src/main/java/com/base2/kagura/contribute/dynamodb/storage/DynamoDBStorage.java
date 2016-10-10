@@ -3,10 +3,9 @@ package com.base2.kagura.contribute.dynamodb.storage;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-import com.amazonaws.services.dynamodbv2.document.DynamoDB;
-import com.amazonaws.services.dynamodbv2.document.Item;
-import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
-import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.datamodeling.marshallers.StringToStringMarshaller;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.GetItemResult;
 import com.amazonaws.util.StringInputStream;
 import com.base2.kagura.core.report.configmodel.ReportsConfig;
 import com.base2.kagura.core.storage.ReportsProvider;
@@ -14,33 +13,36 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by arran on 7/10/2016.
  */
-public class DynamoDBStorage extends ReportsProvider<PrimaryKey> {
+public class DynamoDBStorage extends ReportsProvider<String> {
 	private static final Logger LOG = LoggerFactory.getLogger(DynamoDBStorage.class);
 
-	AWSCredentials credentials;
 	String reportsTable;
+	private AmazonDynamoDB dynamoDB;
 
 	public DynamoDBStorage(AWSCredentials credentials, String reportsTable) {
-		this.credentials = credentials;
+		AmazonDynamoDB client = new AmazonDynamoDBClient(credentials);
+		dynamoDB = new AmazonDynamoDBClient(credentials);
+		this.reportsTable = reportsTable;
+	}
+
+	public DynamoDBStorage(AmazonDynamoDB dynamoDB, String reportsTable) {
+		this.dynamoDB = dynamoDB;
 		this.reportsTable = reportsTable;
 	}
 
 	@Override
-	protected String loadReport(ReportsConfig reportsConfig, PrimaryKey report) throws Exception {
-		AmazonDynamoDB client = new AmazonDynamoDBClient(credentials);
+	protected String loadReport(ReportsConfig reportsConfig, String reportId) throws Exception {
+		GetItemResult itemResult = dynamoDB.getItem(this.reportsTable, new HashMap<String, AttributeValue>() {{ put("reportId", StringToStringMarshaller.instance().marshall(reportId)); }});
+		Map<String, AttributeValue> item = itemResult.getItem();
 
-		DynamoDB dynamoDB = new DynamoDB(client);
-		Table table = dynamoDB.getTable(this.reportsTable);
-
-		Item item = table.getItem(report);
-
-		if (item != null) {
-			String reportId = item.getString("reportId");
-			String reportYaml = item.getString("reportYaml");
+		if (item != null && reportId.equals(item.get("reportId").getS())) {
+			String reportYaml = item.get("reportYaml").getS();
 			LOG.debug("Got report " + reportId);
 			if (this.loadReport(reportsConfig, new StringInputStream(reportYaml), reportId)) {
 				return reportId;
@@ -55,13 +57,13 @@ public class DynamoDBStorage extends ReportsProvider<PrimaryKey> {
 	}
 
 	@Override
-	protected PrimaryKey[] getReportList() {
-		return new PrimaryKey[0];
+	protected String[] getReportList() {
+		return new String[0];
 	} // Not necessary
 
 	@Override
-	protected String reportToName(PrimaryKey report) {
-		return (String)report.getComponents().iterator().next().getValue(); // Not necessary
+	protected String reportToName(String reportId) {
+		return reportId; // Not necessary
 	}
 
 	@Override
@@ -76,9 +78,8 @@ public class DynamoDBStorage extends ReportsProvider<PrimaryKey> {
 			return reportsConfig;
 		}
 		for (String reportId : restrictToNamed) {
-			PrimaryKey primaryKey = new PrimaryKey("reportId", reportId);
 			try {
-				loadReport(reportsConfig, primaryKey);
+				loadReport(reportsConfig, reportId);
 			} catch (Exception e) {
 				LOG.warn("Couldn't load report " + reportId);
 				e.printStackTrace();

@@ -1,0 +1,112 @@
+---
+-
+  "reportId": "test1"
+  "reportYaml": |
+    type: "DynamoDB"
+    endpoint: "http://localhost:8000"
+    region: "us-west-2"
+    action: query
+    pageLimit: 5
+    columns:
+      - { name: title, label: Movie title }
+      - { name: info.genres, label: Genres }
+      - { name: "info.actors[0]", label: Lead Actor }
+
+    dynamo:
+      query:
+        table: "Movies"
+        projection: [ "#nameYear", "title", "info.genres", "info.actors[0]" ]
+        conditions:
+          or:
+          - and:
+            - expression: "#nameYear = :valueYear"
+            - beanExpression: 'return valueStartLetter != null && valueEndLetter != null ? "title between :valueStartLetter and :valueEndLetter" : null'
+        names:
+          nameYear: year
+        values:
+          valueYear: 2001
+          valueStartLetter: 'return defaultIfBlank(paramStartLetter,"A")'
+          valueEndLetter: 'return defaultIfBlank(paramEndLetter,"S")'
+
+    beanScript: |
+          boolean isBlank(String cs) {
+              int strLen;
+              if (cs == null || (strLen = cs.length()) == 0) {
+                  return true;
+              }
+              for (int i = 0; i < strLen; i++) {
+                  if (Character.isWhitespace(cs.charAt(i)) == false) {
+                      return false;
+                  }
+              }
+              return true;
+          }
+
+          String defaultIfBlank(String str, String defaultStr) {
+              return isBlank(str) ? defaultStr : str;
+          }
+
+
+    paramConfig:
+      - { type: String, id: paramYear , name: "Year", help: "", placeholder: "" }
+      - { type: String, id: paramStartLetter , name: "Start Letter", help: "", placeholder: "" }
+      - { type: String, id: paramEndLetter , name: "End Letter", help: "", placeholder: "" }
+
+    extraOptions:
+      reportName: "Movies by Letter and Year"
+      directory: "MovieDB"
+-
+  "reportId": "test2"
+  "reportYaml": |
+    type: "DynamoDB"
+    endpoint: "http://localhost:8000"
+    region: "us-west-2"
+    action: query
+    pageLimit: 5
+    columns:
+      - { name: title, label: Movie title }
+      - { name: info.genres, label: Genres }
+      - { name: "info.actors[0]", label: Lead Actor }
+
+    dynamo:
+      query:
+        table: "Movies"
+        projection: [ "#nameYear", "title", "info.genres", "info.actors[0]" ]
+        conditions:
+          or:
+          - and:
+            - expression: "#nameYear = :valueYear"
+            - beanExpression: 'return valueStartLetter != null && valueEndLetter != null ? "title between :valueStartLetter and :valueEndLetter" : null'
+        names:
+          nameYear: year
+        values:
+          valueYear: 2001
+          valueStartLetter: 'return defaultIfBlank(paramStartLetter,"A")'
+          valueEndLetter: 'return defaultIfBlank(paramEndLetter,"S")'
+
+    beanScript: |
+          boolean isBlank(String cs) {
+              int strLen;
+              if (cs == null || (strLen = cs.length()) == 0) {
+                  return true;
+              }
+              for (int i = 0; i < strLen; i++) {
+                  if (Character.isWhitespace(cs.charAt(i)) == false) {
+                      return false;
+                  }
+              }
+              return true;
+          }
+
+          String defaultIfBlank(String str, String defaultStr) {
+              return isBlank(str) ? defaultStr : str;
+          }
+
+    paramConfig:
+      - { type: String, id: paramYear , name: "Year", help: "", placeholder: "" }
+      - { type: String, id: paramStartLetter , name: "Start Letter", help: "", placeholder: "" }
+      - { type: String, id: paramEndLetter , name: "End Letter", help: "", placeholder: "" }
+
+    extraOptions:
+      reportName: "Movies by Letter and Year test2"
+      directory: "MovieDB"
