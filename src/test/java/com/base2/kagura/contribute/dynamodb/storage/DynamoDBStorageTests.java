@@ -108,6 +108,4 @@ public class DynamoDBStorageTests {
 		String reportId = dynamoDBStorage.loadReport(reportsConfig, "testfail");
 		Assert.assertThat(reportId, IsNull.nullValue());
 	}
-
-
 }
