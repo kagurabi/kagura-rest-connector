@@ -8,6 +8,7 @@ import com.base2.kagura.contribute.dynamodb.report.configmodel.DynamoDbReportCon
 import com.base2.kagura.contribute.dynamodb.report.connector.MovieSampleDataObject;
 import com.base2.kagura.core.report.configmodel.ReportsConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.hamcrest.collection.IsCollectionWithSize;
 import org.hamcrest.core.IsCollectionContaining;
 import org.hamcrest.core.IsEqual;
@@ -48,7 +49,7 @@ public class DynamoDBStorageTests {
 //			.withAttributeDefinitions(new AttributeDefinition("reportYaml", "S"))
 			.withProvisionedThroughput(new ProvisionedThroughput(10l,10l))
 		);
-		ObjectMapper objectMapper = new ObjectMapper();
+		ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
 		List<MovieSampleDataObject> movies = Arrays.asList(objectMapper.readValue(this.getClass().getResourceAsStream("/moviedata.json"), MovieSampleDataObject[].class));
 		List<WriteRequest> items = new ArrayList<>();
 		for (MovieSampleDataObject movie : movies) {
@@ -59,7 +60,7 @@ public class DynamoDBStorageTests {
 				put("info", new AttributeValue().withM(new HashMap<>()));
 			}});
 		}
-		List<ReportSampleDataObject> reports = Arrays.asList(objectMapper.readValue(this.getClass().getResourceAsStream("/reports.json"), ReportSampleDataObject[].class));
+		List<ReportSampleDataObject> reports = Arrays.asList(objectMapper.readValue(this.getClass().getResourceAsStream("/reports.yaml"), ReportSampleDataObject[].class));
 		items = new ArrayList<>();
 		for (ReportSampleDataObject report : reports) {
 //			LOG.debug("Movie: " + movie.getTitle() + " " + movie.getYear());
