@@ -3,10 +3,10 @@ package com.base2.kagura.contribute.dynamodb.storage;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-import com.amazonaws.services.dynamodbv2.document.*;
-import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
-import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
-import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
+import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.util.StringInputStream;
 import com.base2.kagura.core.report.configmodel.ReportsConfig;
 import com.base2.kagura.core.storage.ReportsProvider;
@@ -31,48 +31,24 @@ public class DynamoDBStorage extends ReportsProvider<PrimaryKey> {
 
 	@Override
 	protected String loadReport(ReportsConfig reportsConfig, PrimaryKey report) throws Exception {
-
-		NameMap nameMap = new NameMap();
-		ValueMap valueMap = new ValueMap();
-
-		nameMap.put("reportName", "reportName");
-		nameMap.put("valueMap", "valueMap");
-
-		valueMap.put("reportName", report.getName());
-
-		QuerySpec spec = new QuerySpec()
-			.withProjectionExpression("#reportName,#valueMap")
-			.withKeyConditionExpression("#reportName = :reportName")
-			.withValueMap(valueMap)
-			.withNameMap(nameMap);
-
 		AmazonDynamoDB client = new AmazonDynamoDBClient(credentials);
 
 		DynamoDB dynamoDB = new DynamoDB(client);
 		Table table = dynamoDB.getTable(this.reportsTable);
 
-		table.getItem()
+		Item item = table.getItem(report);
 
-		ItemCollection<QueryOutcome> results = table.query(spec.withMaxPageSize(10));
-		int i = 0;
-		for (Page<Item, QueryOutcome> page : results.pages()) {
-			LOG.debug("Page: " + i);
-			LOG.debug("Page size: " + page.size());
-			if (!page.hasNextPage()) {
-				break;
+		if (item != null) {
+			String reportId = item.getString("reportId");
+			String reportYaml = item.getString("reportYaml");
+			LOG.debug("Got report " + reportId);
+			if (this.loadReport(reportsConfig, new StringInputStream(reportYaml), reportId)) {
+				return reportId;
+			} else {
+				LOG.debug("Report didn't load");
 			}
-			LOG.debug("Getting items for page");
-			for (Item each : page) {
-				String reportName = each.getString("reportName");
-				String reportYaml = each.getString("reportYaml");
-				LOG.debug("Got report " + reportName);
-				if (this.loadReport(reportsConfig, new StringInputStream(reportYaml), reportName)) {
-					return reportName;
-				} else {
-					LOG.debug("Report didn't load");
-				}
-			}
-			i++;
+		} else {
+			LOG.debug("Report wasn't found");
 		}
 
 		return null;
@@ -81,21 +57,33 @@ public class DynamoDBStorage extends ReportsProvider<PrimaryKey> {
 	@Override
 	protected PrimaryKey[] getReportList() {
 		return new PrimaryKey[0];
-	}
+	} // Not necessary
 
 	@Override
 	protected String reportToName(PrimaryKey report) {
-		if (report == null) return "<null>";
-		return ;
+		return (String)report.getComponents().iterator().next().getValue(); // Not necessary
 	}
 
 	@Override
 	public ReportsConfig getReportsConfig() {
-		return super.getReportsConfig();
+		return super.getReportsConfig(); // Not necessary
 	}
 
 	@Override
 	public ReportsConfig getReportsConfig(Collection<String> restrictToNamed) {
-		return super.getReportsConfig(restrictToNamed);
+		ReportsConfig reportsConfig = new ReportsConfig();
+		if (restrictToNamed == null) {
+			return reportsConfig;
+		}
+		for (String reportId : restrictToNamed) {
+			PrimaryKey primaryKey = new PrimaryKey("reportId", reportId);
+			try {
+				loadReport(reportsConfig, primaryKey);
+			} catch (Exception e) {
+				LOG.warn("Couldn't load report " + reportId);
+				e.printStackTrace();
+			}
+		}
+		return reportsConfig;
 	}
 }
