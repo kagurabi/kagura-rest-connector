@@ -1,6 +1,7 @@
 package com.base2.kagura.contribute.dynamodb.storage;
 
 import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.regions.RegionUtils;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.marshallers.StringToStringMarshaller;
@@ -25,10 +26,11 @@ public class DynamoDBStorage extends ReportsProvider<String> {
 	String reportsTable;
 	private AmazonDynamoDB dynamoDB;
 
-	public DynamoDBStorage(AWSCredentials credentials, String reportsTable) {
+	public DynamoDBStorage(AWSCredentials credentials, String region, String reportsTable) {
 		AmazonDynamoDB client = new AmazonDynamoDBClient(credentials);
 		dynamoDB = new AmazonDynamoDBClient(credentials);
 		this.reportsTable = reportsTable;
+		dynamoDB.setRegion(RegionUtils.getRegion(region));
 	}
 
 	public DynamoDBStorage(AmazonDynamoDB dynamoDB, String reportsTable) {
