@@ -20,12 +20,12 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <id>kagura-maven</id>
+            <url>s3://maven.kagura.base2.services/maven-snapshot/</url>
         </snapshotRepository>
         <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>kagura-maven</id>
+            <url>s3://maven.kagura.base2.services/maven/</url>
         </repository>
     </distributionManagement>
 
@@ -51,6 +51,13 @@
     </scm>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.springframework.build</groupId>
+                <artifactId>aws-maven</artifactId>
+                <version>5.0.0.RELEASE</version>
+            </extension>
+        </extensions>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
