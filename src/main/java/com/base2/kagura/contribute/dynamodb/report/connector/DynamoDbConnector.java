@@ -162,14 +162,14 @@ public class DynamoDbConnector extends ReportConnector {
 		for (Page<Item, ScanOutcome> page : results.pages()) {
 			LOG.debug("Page: " + i);
 			LOG.debug("Page size: " + page.size());
-			if (!page.hasNextPage()) {
-				break;
-			}
 			if (i == getPage()) {
 				LOG.debug("Getting items for page");
 				for (Item each : page) {
 					result.add(each.asMap());
 				}
+			}
+			if (!page.hasNextPage()) {
+				break;
 			}
 			if (i >= getPage()) {
 				break;
@@ -234,14 +234,14 @@ public class DynamoDbConnector extends ReportConnector {
 			for (Page<Item, QueryOutcome> page : results.pages()) {
 				LOG.debug("Page: " + i);
 				LOG.debug("Page size: " + page.size());
-				if (!page.hasNextPage()) {
-					break;
-				}
 				if (i == getPage()) {
 					LOG.debug("Getting items for page");
 					for (Item each : page) {
 						result.add(each.asMap());
 					}
+				}
+				if (!page.hasNextPage()) {
+					break;
 				}
 				if (i >= getPage()) {
 					break;
