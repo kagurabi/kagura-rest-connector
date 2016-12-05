@@ -108,4 +108,13 @@ public class DynamoDBStorageTests {
 		String reportId = dynamoDBStorage.loadReport(reportsConfig, "testfail");
 		Assert.assertThat(reportId, IsNull.nullValue());
 	}
+	@Test(expected = java.lang.Exception.class)
+	public void LoadReportTestFailBadType() throws Exception {
+		LOG.info("Loading report test3");
+		AmazonDynamoDB dynamoDB = setupDB();
+		DynamoDBStorage dynamoDBStorage = new DynamoDBStorage(dynamoDB, "reports");
+		ReportsConfig reportsConfig = new ReportsConfig();
+		String reportId = dynamoDBStorage.loadReport(reportsConfig, "test3");
+		Assert.assertThat(reportId, IsNull.nullValue());
+	}
 }

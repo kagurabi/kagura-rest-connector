@@ -10,6 +10,7 @@ import com.amazonaws.services.dynamodbv2.model.GetItemResult;
 import com.amazonaws.util.StringInputStream;
 import com.base2.kagura.core.report.configmodel.ReportsConfig;
 import com.base2.kagura.core.storage.ReportsProvider;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +50,14 @@ public class DynamoDBStorage extends ReportsProvider<String> {
 			if (this.loadReport(reportsConfig, new StringInputStream(reportYaml), reportId)) {
 				return reportId;
 			} else {
-				LOG.debug("Report didn't load");
+				String errors = "unknown error";
+				if (reportsConfig.getErrors() != null && reportsConfig.getErrors().size() > 0) {
+					errors = StringUtils.join(reportsConfig.getErrors(), " ");
+				} else if (this.getErrors() != null && this.getErrors().size() > 0) {
+					errors = StringUtils.join(this.getErrors(), " ");
+				}
+				LOG.debug("Report didn't load " + errors);
+				throw new Exception("Report didn't load " + errors);
 			}
 		} else {
 			LOG.debug("Report wasn't found");
@@ -84,7 +92,7 @@ public class DynamoDBStorage extends ReportsProvider<String> {
 				loadReport(reportsConfig, reportId);
 			} catch (Exception e) {
 				LOG.warn("Couldn't load report " + reportId, e);
-				reportsConfig.getErrors().add(e.getMessage());
+//				reportsConfig.getErrors().add(e.getMessage());
 			}
 		}
 		return reportsConfig;
