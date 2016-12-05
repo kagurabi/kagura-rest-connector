@@ -83,9 +83,8 @@ public class DynamoDBStorage extends ReportsProvider<String> {
 			try {
 				loadReport(reportsConfig, reportId);
 			} catch (Exception e) {
-				LOG.warn("Couldn't load report " + reportId);
+				LOG.warn("Couldn't load report " + reportId, e);
 				reportsConfig.getErrors().add(e.getMessage());
-				e.printStackTrace();
 			}
 		}
 		return reportsConfig;
