@@ -50,7 +50,7 @@ public class ReportConfigTypeResolver implements TypeIdResolver {
 				return each.getKey();
 			}
 		}
-		throw new IllegalStateException("class " + clazz + " is not in ReportConfigTypeResolver ");
+		return null;
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class ReportConfigTypeResolver implements TypeIdResolver {
 			return TypeFactory.defaultInstance().constructSpecializedType(mBaseType, typeMap.get(type.toUpperCase()));
 		}
 
-		throw new IllegalStateException("cannot find Report Config type '" + type + "'");
+		return null;
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class ReportConfigTypeResolver implements TypeIdResolver {
 			return context.constructSpecializedType(mBaseType, typeMap.get(id.toUpperCase()));
 		}
 
-		throw new IllegalStateException("cannot find Report Config type '" + id + "'");
+		return null;
 	}
 
 	@Override
