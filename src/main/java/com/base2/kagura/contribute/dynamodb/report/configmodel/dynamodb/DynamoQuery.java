@@ -22,6 +22,12 @@ public class DynamoQuery {
 	Map<String, String> names;
 	Map<String, Object> values;
 
+	public DynamoQuery() {
+		this.names = new HashMap<>();
+		this.values = new HashMap<>();
+		this.projection = new ArrayList<>();
+	}
+
 	public String getTable() {
 		return table;
 	}

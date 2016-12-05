@@ -95,6 +95,8 @@ public class DynamoDbConnector extends ReportConnector {
 	}
 
 	public Map<String, Object> createValueMap(Interpreter bsh) {
+		if (this.values == null) return null;
+		if (this.values.size() == 0) return null;
 		Map<String, Object> result = new ValueMap();
 		for (Map.Entry<String, Object> each : this.values.entrySet()) {
 			Object value = each.getValue();
@@ -113,6 +115,8 @@ public class DynamoDbConnector extends ReportConnector {
 	}
 
 	public Map<String, String> createNameMap() {
+		if (this.names == null) return null;
+		if (this.names.size() == 0) return null;
 		Map<String, String> result = new NameMap();
 		for (Map.Entry<String, String> each : this.names.entrySet()) {
 			String value = each.getValue();
@@ -226,22 +230,26 @@ public class DynamoDbConnector extends ReportConnector {
 		ItemCollection<QueryOutcome> results = table.query(querySpec.withMaxPageSize(this.getPageLimit()));
 		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>(getPageLimit());
 		int i = 0;
-		for (Page<Item, QueryOutcome> page : results.pages()) {
-			LOG.debug("Page: " + i);
-			LOG.debug("Page size: " + page.size());
-			if (!page.hasNextPage()) {
-				break;
-			}
-			if (i == getPage()) {
-				LOG.debug("Getting items for page");
-				for (Item each : page) {
-					result.add(each.asMap());
+		try {
+			for (Page<Item, QueryOutcome> page : results.pages()) {
+				LOG.debug("Page: " + i);
+				LOG.debug("Page size: " + page.size());
+				if (!page.hasNextPage()) {
+					break;
 				}
+				if (i == getPage()) {
+					LOG.debug("Getting items for page");
+					for (Item each : page) {
+						result.add(each.asMap());
+					}
+				}
+				if (i >= getPage()) {
+					break;
+				}
+				i++;
 			}
-			if (i >= getPage()) {
-				break;
-			}
-			i++;
+		} catch (Exception ex) {
+			this.errors.add(ex.getMessage());
 		}
 		return result;
 	}
@@ -249,10 +257,14 @@ public class DynamoDbConnector extends ReportConnector {
 	@Override
 	protected void runReport(Map<String, Object> extra) {
 		rows = new ArrayList<Map<String, Object>>();
-		if (this.action.equals("scan")) {
-			rows = scan(extra);
-		} else {
-			rows = query(extra);
+		try {
+			if (this.action.equals("scan")) {
+				rows = scan(extra);
+			} else {
+				rows = query(extra);
+			}
+		} catch (Exception e) {
+			this.getErrors().add(e.getMessage());
 		}
 	}
 
