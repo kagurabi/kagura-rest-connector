@@ -57,7 +57,7 @@ public class DynamoDBStorage extends ReportsProvider<String> {
 					errors = StringUtils.join(this.getErrors(), " ");
 				}
 				LOG.debug("Report didn't load " + errors);
-				throw new Exception("Report didn't load " + errors);
+				reportsConfig.getErrors().add(errors);
 			}
 		} else {
 			LOG.debug("Report wasn't found");
