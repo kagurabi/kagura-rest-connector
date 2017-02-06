@@ -7,7 +7,7 @@
     <version>1.10-SNAPSHOT</version>
     <groupId>com.kagurabi.shared</groupId>
     <artifactId>Kagura-dynamodb-connector</artifactId>
-    <name>Kagura-dynamodb-connector</name>
+    <name>kagura-dynamodb-connector</name>
 
     <repositories>
         <repository>
