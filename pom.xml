@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.kagurabi</groupId>
-    <artifactId>Kagura-bom</artifactId>
+    <artifactId>kagura-bom</artifactId>
     <version>1.10-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Kagura-bom</name>
+    <name>kagura-bom</name>
     <description>The base POM of the Kagura project</description>
     <url>https://kagura.atlassian.net/</url>
 
