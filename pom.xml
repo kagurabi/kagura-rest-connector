@@ -8,15 +8,49 @@
     <version>1.10-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <parent>
-        <groupId>com.kagurabi</groupId>
-        <artifactId>Kagura-parent</artifactId>
-        <version>1.10-SNAPSHOT</version>
-    </parent>
-
     <name>Kagura-bom</name>
     <description>The base POM of the Kagura project</description>
     <url>https://kagura.atlassian.net/</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+    <developers>
+        <developer>
+            <id>Arran</id>
+            <name>Arran Ubels</name>
+            <email>arran@kagurabi.com</email>
+            <url>http://www.base2services.com/about/team.html</url>
+            <organization>base2Services</organization>
+            <organizationUrl>http://www.base2services.com/</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>+10</timezone>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:kagura/kagura-bom.git</connection>
+        <developerConnection>scm:git:git@github.com:kagura/kagura-bom.git</developerConnection>
+        <url>git@github.com:kagura/kagura-bom.git</url>
+    </scm>
 
     <properties>
         <maven-resources-plugin.version>2.4.2</maven-resources-plugin.version>
