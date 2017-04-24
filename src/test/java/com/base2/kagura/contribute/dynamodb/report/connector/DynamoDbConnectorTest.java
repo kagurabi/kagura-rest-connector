@@ -1,9 +1,7 @@
 package com.base2.kagura.contribute.dynamodb.report.connector;
 
-import bsh.EvalError;
 import bsh.Interpreter;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.local.embedded.DynamoDBEmbedded;
 import com.amazonaws.services.dynamodbv2.local.shared.access.AmazonDynamoDBLocal;
 import com.amazonaws.services.dynamodbv2.model.*;
@@ -30,9 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
-import java.text.CharacterIterator;
 import java.util.*;
 
 /**

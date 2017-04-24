@@ -2,7 +2,6 @@ package com.base2.kagura.contribute.dynamodb.report.configmodel.dynamodb.express
 
 import bsh.EvalError;
 import bsh.Interpreter;
-import bsh.InterpreterError;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 

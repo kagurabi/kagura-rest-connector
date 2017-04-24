@@ -4,9 +4,6 @@ import bsh.EvalError;
 import bsh.Interpreter;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
-import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
-import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
-import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.base2.kagura.contribute.dynamodb.report.configmodel.dynamodb.expressions.DynamoExpression;
 import org.apache.commons.lang3.StringUtils;
 

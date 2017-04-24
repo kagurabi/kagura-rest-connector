@@ -1,7 +1,6 @@
 package com.base2.kagura.contribute.dynamodb.report.configmodel.dynamodb.expressions;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

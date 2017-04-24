@@ -1,7 +1,6 @@
 package com.base2.kagura.contribute.dynamodb.report.configmodel;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.base2.kagura.contribute.dynamodb.report.configmodel.dynamodb.DynamoQueryContainer;
 import com.base2.kagura.contribute.dynamodb.report.connector.DynamoDbConnector;
 import com.base2.kagura.core.report.configmodel.ReportConfig;
