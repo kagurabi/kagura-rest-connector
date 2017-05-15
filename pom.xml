@@ -8,7 +8,7 @@
     <artifactId>kagura-rest-api</artifactId>
     <packaging>bundle</packaging>
     <name>kagura-rest-api</name>
-    <version>1.10-SNAPSHOT</version>
+    <version>1.11-SNAPSHOT</version>
 
     <licenses>
         <license>
