@@ -8,7 +8,7 @@
     <artifactId>kagura-rest-api</artifactId>
     <packaging>bundle</packaging>
     <name>kagura-rest-api</name>
-    <version>1.13-SNAPSHOT</version>
+    <version>1.14-SNAPSHOT</version>
 
     <licenses>
         <license>
@@ -137,11 +137,11 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <javax.ws.rs-api.version>2.0-m10</javax.ws.rs-api.version>
-        <jackson.version>2.6.6</jackson.version>
-        <commons-beanutils.version>1.9.2</commons-beanutils.version>
+        <javax.ws.rs-api.version>2.1-m08</javax.ws.rs-api.version>
+        <jackson.version>2.9.0.pr3</jackson.version>
+        <commons-beanutils.version>1.9.3</commons-beanutils.version>
         <kagura-core.version>1.10-SNAPSHOT</kagura-core.version>
-        <maven-bundle-plugin.version>2.3.7</maven-bundle-plugin.version>
+        <maven-bundle-plugin.version>3.3.0</maven-bundle-plugin.version>
     </properties>
 
     <dependencies>
