@@ -6,7 +6,7 @@
 
     <groupId>com.kagurabi</groupId>
     <artifactId>kagura-bom</artifactId>
-    <version>1.14-SNAPSHOT</version>
+    <version>1.15-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>kagura-bom</name>
@@ -62,12 +62,12 @@
         <log4j.version>1.2.17</log4j.version>
         <junit.version>4.12</junit.version>
         <hamcrest.version>1.3</hamcrest.version>
-        <commons-lang3.version>3.5</commons-lang3.version>
+        <commons-lang3.version>3.6</commons-lang3.version>
         <commons-collections.version>20040616</commons-collections.version>
         <commons-io.version>2.5</commons-io.version>
-        <guava.version>22.0-rc1-android</guava.version>
+        <guava.version>22.0-android</guava.version>
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
-        <groovy.version>2.5.0-alpha-1</groovy.version>
+        <groovy.version>2.5.0-beta-1</groovy.version>
         <maven-bundle-plugin.version>2.3.7</maven-bundle-plugin.version>
         <mysql-connector-java.version>6.0.6</mysql-connector-java.version>
         <super-csv.version>2.4.0</super-csv.version>
@@ -78,7 +78,7 @@
         <freemarker.version>2.3.26-incubating</freemarker.version>
         <joda-time.version>2.9.9</joda-time.version>
         <mail.version>1.5.0-b01</mail.version>
-        <h2.version>1.4.195</h2.version>
+        <h2.version>1.4.196</h2.version>
         <jgit.version>3.1.0.201310021548-r</jgit.version>
         <ivy.version>2.4.0</ivy.version>
         <xml-apis.version>2.0.2</xml-apis.version>
