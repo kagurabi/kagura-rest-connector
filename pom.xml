@@ -7,7 +7,7 @@
     <artifactId>kagura-resources</artifactId>
     <name>kagura-resources</name>
     <packaging>bundle</packaging>
-    <version>1.13-SNAPSHOT</version>
+    <version>1.14-SNAPSHOT</version>
 
     <licenses>
         <license>
@@ -50,9 +50,9 @@
     </scm>
 
     <properties>
-        <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
         <java.version>1.8</java.version>
-        <maven-bundle-plugin.version>2.3.7</maven-bundle-plugin.version>
+        <maven-bundle-plugin.version>3.3.0</maven-bundle-plugin.version>
     </properties>
 
     <build>
