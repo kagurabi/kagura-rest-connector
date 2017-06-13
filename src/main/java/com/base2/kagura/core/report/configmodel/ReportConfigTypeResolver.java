@@ -54,16 +54,6 @@ public class ReportConfigTypeResolver implements TypeIdResolver {
 	}
 
 	@Override
-	public JavaType typeFromId(String type)
-	{
-		if (typeMap.containsKey(type.toUpperCase())) {
-			return TypeFactory.defaultInstance().constructSpecializedType(mBaseType, typeMap.get(type.toUpperCase()));
-		}
-
-		return null;
-	}
-
-	@Override
 	public JavaType typeFromId(DatabindContext context, String id) {
 		if (typeMap.containsKey(id.toUpperCase())) {
 			return context.constructSpecializedType(mBaseType, typeMap.get(id.toUpperCase()));
