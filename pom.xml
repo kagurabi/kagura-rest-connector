@@ -137,10 +137,10 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <javax.ws.rs-api.version>2.1-m08</javax.ws.rs-api.version>
-        <jackson.version>2.9.0.pr3</jackson.version>
+        <javax.ws.rs-api.version>2.1-m09</javax.ws.rs-api.version>
+        <jackson.version>2.9.0.pr4</jackson.version>
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
-        <kagura-core.version>1.10-SNAPSHOT</kagura-core.version>
+        <kagura-core.version>1.15-SNAPSHOT</kagura-core.version>
         <maven-bundle-plugin.version>3.3.0</maven-bundle-plugin.version>
     </properties>
 
