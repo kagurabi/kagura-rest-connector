@@ -40,11 +40,11 @@
         <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <bsh-core.version>2.0b4</bsh-core.version>
-        <aws-java-sdk-dynamodb.version>1.11.146</aws-java-sdk-dynamodb.version>
+        <aws-java-sdk-dynamodb.version>1.11.150</aws-java-sdk-dynamodb.version>
         <joda-time.version>2.9.9</joda-time.version>
         <kagura-core.version>1.15-SNAPSHOT</kagura-core.version>
         <sqlite4java.version>1.0.392</sqlite4java.version>
-        <maven-dependency-plugin.version>3.0.0</maven-dependency-plugin.version>
+        <maven-dependency-plugin.version>3.0.1</maven-dependency-plugin.version>
         <aws-maven.version>5.0.0.RELEASE</aws-maven.version>
     </properties>
 
