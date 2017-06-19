@@ -68,7 +68,7 @@
         <poi.version>3.16</poi.version>
         <itextpdf.version>5.5.11</itextpdf.version>
         <xmlworker.version>5.5.11</xmlworker.version>
-        <jackson.version>2.9.0.pr3</jackson.version>
+        <jackson.version>2.9.0.pr4</jackson.version>
         <freemarker.version>2.3.26-incubating</freemarker.version>
         <joda-time.version>2.9.9</joda-time.version>
         <mail.version>1.5.0-b01</mail.version>
