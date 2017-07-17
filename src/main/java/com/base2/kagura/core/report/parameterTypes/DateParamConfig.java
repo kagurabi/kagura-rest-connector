@@ -15,6 +15,8 @@
  */
 package com.base2.kagura.core.report.parameterTypes;
 
+import io.swagger.annotations.ApiModel;
+
 /**
  * A parameter with a date backing value. PropertyUtils from the Apache Commons Bean library is used to populate
  * this value. Date AND date time exist, as the type reported to Kagura.js are different. There is no other reason
@@ -22,5 +24,6 @@ package com.base2.kagura.core.report.parameterTypes;
  * @author aubels
  *         Date: 10/09/13
  */
+@ApiModel(parent = ParamConfig.class, description = "Date only parameter, ignore the time, time is stored and passed around but ignored, for conversion details see 'PropertyUtils from the Apache Commons Bean library'.")
 public class DateParamConfig extends DateTimeParamConfig {
 }

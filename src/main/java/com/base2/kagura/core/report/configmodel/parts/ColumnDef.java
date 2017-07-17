@@ -15,6 +15,9 @@
  */
 package com.base2.kagura.core.report.configmodel.parts;
 
+import com.base2.kagura.core.report.parameterTypes.ParamConfig;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
@@ -28,6 +31,7 @@ import java.util.Map;
  * This defines what a column definition looks like, and what it's called.
  * It has no impact in terms of the reporting-core. However it is used in kagura.js and the report configuration.
  */
+@ApiModel(description = "The column defintion. Complete model from the config file minus senstive details.")
 public class ColumnDef {
     private String name;
     private String label;
@@ -53,6 +57,7 @@ public class ColumnDef {
      * Name of the column, name to match SQL column against.
      * @return
      */
+    @ApiModelProperty(value = "Name of the column, used to match data to query. Use label or extra options to override.")
     public String getName() {
         return name;
     }
@@ -87,6 +92,7 @@ public class ColumnDef {
      * Gets the display label, if no label has been set, uses the "name" field.
      * @return
      */
+	@ApiModelProperty(value = "The label to display to the user, returns the name. If you want special rules, define those in extra options this should be simple.")
     public String getLabel() {
         return StringUtils.defaultString(label,name);
     }
@@ -103,6 +109,7 @@ public class ColumnDef {
      * Extra options. Passed verbatim to kagura.js from report configuration. Put custom configuration here.
      * @return Extra options.
      */
+	@ApiModelProperty(value = "Extra options. Passed directly from config file. Used by clients. Define things such as directory, locations, etc.")
     public Map<String, Object> getExtraOptions() {
         return extraOptions;
     }

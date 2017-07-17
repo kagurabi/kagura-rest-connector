@@ -19,6 +19,8 @@ import com.base2.kagura.core.report.parameterTypes.datasources.OptionList;
 import com.base2.kagura.core.report.parameterTypes.datasources.Source;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
@@ -46,6 +48,7 @@ import java.util.regex.Pattern;
         @JsonSubTypes.Type(value = DateParamConfig.class, name = "Date"),
         @JsonSubTypes.Type(value = DateTimeParamConfig.class, name = "DateTime"),
 })
+@ApiModel(description = "Generic parameter config item.")
 public abstract class ParamConfig {
 	protected Boolean required = false;
 	String name;
@@ -168,7 +171,8 @@ public abstract class ParamConfig {
      * Parameter display name.
      * @return
      */
-    public String getName() {
+	@ApiModelProperty(value = "The parameter name, used as the display value only. (Different to other parts)")
+	public String getName() {
         return name;
     }
 
@@ -184,6 +188,7 @@ public abstract class ParamConfig {
      * The type of the parameter. Has to match one of the class names because of Jackson mapping.
      * @return
      */
+	@ApiModelProperty(value = "The type of parameter, such as, ManyCombo (multiple string), Boolean, Date, DateTime, and '' (No value = string/single/generic) ")
     public String getType() {
         return type;
     }
@@ -200,6 +205,7 @@ public abstract class ParamConfig {
      * Help text. Kagura.js in Javascript example shows this under the input, where appropriate, in italics
      * @return
      */
+	@ApiModelProperty(value = "Help string. To display to the user, as a tooltip, or under/over the input.")
     public String getHelp() {
         return help;
     }
@@ -216,6 +222,7 @@ public abstract class ParamConfig {
      * Place holder, when applicable. This is the grayed out italics text which appears inside the empty text boxes
      * @return
      */
+	@ApiModelProperty(value = "Placeholder text. This should be displayed to the user on an unfilled parameter. Should be an example option. Clients should no submit the placeholder value.")
     public String getPlaceholder() {
         return placeholder;
     }
@@ -245,6 +252,7 @@ public abstract class ParamConfig {
      * Gets the possible values accepted from the data sources, used in Combo boxes and ManyCombos (MultiParamConfig)
      * @return
      */
+	@ApiModelProperty(value = "The value, no matter how many of them are, or what they are.")
     public Collection<Object> getValues() {
         if (from != null)
         {
@@ -283,6 +291,7 @@ public abstract class ParamConfig {
      * TomsParam
      * @return
      */
+	@ApiModelProperty(value = "The ID of the parameter, the value that should be used when talking to the server")
     public String getId() {
         Pattern replace = Pattern.compile("\\W+");
         return StringUtils.defaultIfEmpty(id, replace.matcher(getName()).replaceAll(""));
@@ -308,6 +317,7 @@ public abstract class ParamConfig {
      * If the parameter is required in-order to run the report.
      * @return is required
      */
+	@ApiModelProperty(value = "Marks if the client should enforce that this value is populated.")
     public Boolean getRequired() {
         return required;
     }

@@ -15,15 +15,19 @@
  */
 package com.base2.kagura.core.report.parameterTypes;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Collection;
 
 /**
- * A parameter with a boolean backing value. PropertyUtils from the Apache Commons Bean library is used to populate
+ * A parameter with a string backing value.
  * this value.
  * User: aubels
  * Date: 17/07/13
  * Time: 2:56 PM
  */
+@ApiModel(parent = ParamConfig.class, description = "A simple string based parameter.")
 public class SingleParamConfig extends ParamConfig {
     /**
      * Constructor with lots of helpers.
@@ -53,6 +57,7 @@ public class SingleParamConfig extends ParamConfig {
      * Gets the value.
      * @return
      */
+	@ApiModelProperty(value = "A string value, can be null.")
     public String getValue() {
         return value;
     }

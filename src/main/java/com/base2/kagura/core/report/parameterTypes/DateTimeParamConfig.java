@@ -15,6 +15,9 @@
  */
 package com.base2.kagura.core.report.parameterTypes;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
 /**
@@ -25,6 +28,7 @@ import java.util.Date;
  * Date: 17/07/13
  * Time: 3:44 PM
  */
+@ApiModel(parent = ParamConfig.class, description = "Date and Time Parameter, for conversion details see 'PropertyUtils from the Apache Commons Bean library'.")
 public class DateTimeParamConfig extends ParamConfig {
     /**
      * Constructor with lots of helpers.
@@ -46,7 +50,8 @@ public class DateTimeParamConfig extends ParamConfig {
      * Gets the value.
      * @return
      */
-    public Date getValue() {
+	@ApiModelProperty(value = "The date time value can be null.")
+	public Date getValue() {
         return value;
     }
 

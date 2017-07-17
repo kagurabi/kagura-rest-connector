@@ -15,6 +15,9 @@
  */
 package com.base2.kagura.core.report.parameterTypes;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * A parameter with a boolean backing value. PropertyUtils from the Apache Commons Bean library is used to populate
  * this value.
@@ -22,6 +25,7 @@ package com.base2.kagura.core.report.parameterTypes;
  * Date: 17/07/13
  * Time: 3:44 PM
  */
+@ApiModel(parent = ParamConfig.class, description = "Boolean configuration option. Denotes a checkbox generally.")
 public class BooleanParamConfig extends ParamConfig {
     /**
      * Constructor with lots of helpers.
@@ -43,7 +47,8 @@ public class BooleanParamConfig extends ParamConfig {
      * Gets the value.
      * @return
      */
-    public Boolean getValue() {
+	@ApiModelProperty(value = "Boolean, can be null.")
+	public Boolean getValue() {
         return value;
     }
 

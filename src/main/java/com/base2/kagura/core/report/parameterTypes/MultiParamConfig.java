@@ -15,6 +15,9 @@
  */
 package com.base2.kagura.core.report.parameterTypes;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -25,6 +28,7 @@ import java.util.List;
  * Date: 17/07/13
  * Time: 2:55 PM
  */
+@ApiModel(parent = ParamConfig.class, description = "A parameter that alllows multiple string values.")
 public class MultiParamConfig extends ParamConfig {
     /**
      * Constructor with lots of helpers.
@@ -46,7 +50,8 @@ public class MultiParamConfig extends ParamConfig {
      * Gets the value.
      * @return
      */
-    public List<String> getValue() {
+	@ApiModelProperty(value = "A an array or list of strings. Can be null.")
+	public List<String> getValue() {
         return value;
     }
 
