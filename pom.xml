@@ -183,6 +183,13 @@
                 <version>${mysql-connector-java.version}</version>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/com.amazonaws.athena.jdbc/atl-athena-jdbc-driver -->
+            <dependency>
+                <groupId>com.amazonaws.athena.jdbc</groupId>
+                <artifactId>atl-athena-jdbc-driver</artifactId>
+                <version>1.0.2-atlassian-1</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
