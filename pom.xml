@@ -165,6 +165,13 @@
             <version>${mysql-connector-java.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.amazonaws.athena.jdbc/atl-athena-jdbc-driver -->
+        <dependency>
+            <groupId>com.amazonaws.athena.jdbc</groupId>
+            <artifactId>atl-athena-jdbc-driver</artifactId>
+            <version>1.0.2-atlassian-1</version>
+        </dependency>
+
         <!--Testing deps-->
 
         <dependency>
@@ -267,7 +274,7 @@
                             com.base2.kagura.core.storage.*
                         </Export-Package>
                         <Import-Package>*</Import-Package>
-                        <DynamicImport-Package>com.mysql.jdbc;com.mysql.jdbc.*;*</DynamicImport-Package>
+                        <DynamicImport-Package>com.mysql.jdbc;com.mysql.jdbc.*;com.amazonaws.services.athena.*;*</DynamicImport-Package>
                     </instructions>
                 </configuration>
             </plugin>
