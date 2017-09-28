@@ -16,7 +16,7 @@ import java.util.HashMap;
  */
 public class GroovyDataReportConnectorTest {
     @Test
-	@Ignore("Disabled importing (removed ivy dependency)")
+	@Ignore("Disabled importing (removed ivy dependency because security)")
     public void awsImportTest()
     {
         GroovyDataReportConnector groovyDataReportConnector = new GroovyDataReportConnector(new GroovyReportConfig()
