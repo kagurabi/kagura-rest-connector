@@ -30,12 +30,12 @@ import java.util.Map;
  * Provides a groovy script based backend for reports. With this the script writer is required to manually construct
  * the result.
  * Values provided to groovy:
-     List<Map<String, Object>> rows
-     List<ColumnDef> columns
+     List&lt;Map&lt;String, Object&gt;&gt; rows
+     List&lt;ColumnDef&gt; columns
      Integer page
      Integer pageLimit
-     List<ParamConfig> params
-     Map<String, Object> extra
+     List&lt;ParamConfig&gt; params
+     Map&lt;String, Object&gt; extra
 
  To use this, keep in mind the page and pageLimit, refer to the parameters and insert new values into rows.
 

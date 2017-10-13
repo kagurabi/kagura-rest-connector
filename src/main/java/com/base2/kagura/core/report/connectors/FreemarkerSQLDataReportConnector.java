@@ -139,11 +139,11 @@ public abstract class FreemarkerSQLDataReportConnector extends ReportConnector {
      * with additional values. ExtraOptions will be passed to FreeMarker and could contain FreeMaker specific components
      * without causing issue.
      * @param extra Extras provided by the middleware, could be merged with the file. Intended for environmental options
-     * @param requireLimit requireLimit, on queries that are query related requires the the <limit /> tag at the end to
+     * @param requireLimit requireLimit, on queries that are query related requires the the &lt;limit /&gt tag at the end to
      *                     ensure the report has limitations
      * @param sql the SQL query to preprocess.
      * @return A structure containing the processed values and the parameters
-     * @throws Exception Any error is passed back. Ideally to be put in the List<String> errors list
+     * @throws Exception Any error is passed back. Ideally to be put in the List&lt;String&gt; errors list
      */
     protected FreemarkerSQLResult freemakerParams(Map<String, Object> extra, boolean requireLimit, String sql) throws Exception {
         Configuration cfg = new Configuration();

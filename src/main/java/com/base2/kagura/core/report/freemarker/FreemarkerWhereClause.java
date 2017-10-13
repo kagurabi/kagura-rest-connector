@@ -48,7 +48,7 @@ public class FreemarkerWhereClause implements TemplateDirectiveModel
 
     /**
      * Looks for a render option, to determine if it should be run. This is supposed to encapsulate a single SQL where
-     * clause. Such as "name IS NOT NULL" or "id > ${method.value(param.lowLimit)}". This should be encapsulated within
+     * clause. Such as "name IS NOT NULL" or "id &gt; ${method.value(param.lowLimit)}". This should be encapsulated within
      * a where tag. If this doesn't have an render attribute it will run regardless. When this is successful it will
      * populate the parent where clause with the contents.
      *

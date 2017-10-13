@@ -76,7 +76,7 @@ public abstract class ReportsProvider<InternalType> {
 
     /**
      * Returns a reports Configuration with all reports loaded. Strongly recommend using
-     *          getReportsConfig(Collection<String> restrictToNamed)
+     *          getReportsConfig(Collection&lt;String&gt; restrictToNamed)
      * as it will only load the reports with the names passed in. This is useful such as if you passed the reports which
      * the current user can access.
      * @return The reports configration
