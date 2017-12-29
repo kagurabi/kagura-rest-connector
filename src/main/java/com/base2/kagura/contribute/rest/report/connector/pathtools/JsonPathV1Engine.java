@@ -2,6 +2,7 @@ package com.base2.kagura.contribute.rest.report.connector.pathtools;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.io.InputStream;
 import java.util.List;
 
 public class JsonPathV1Engine implements Engine {
@@ -16,10 +17,6 @@ public class JsonPathV1Engine implements Engine {
         } catch (com.jayway.jsonpath.PathNotFoundException ex) {
             return false;
         }
-        // Not used, technically a match as it would be a NULL value.
-//        if (o == null) {
-//            return false;
-//        }
         if (o instanceof List) {
             return ((List)o).size() != 0;
         }
@@ -27,12 +24,28 @@ public class JsonPathV1Engine implements Engine {
     }
 
     @Override
-    public List<Object> GetRowVars(String data) {
-        return null;
+    public List<Object> GetArray(String data, String rowVariablePath) {
+        try {
+            return JsonPath.read(data, rowVariablePath);
+        } catch (com.jayway.jsonpath.PathNotFoundException ex) {
+            return null;
+        }
     }
 
     @Override
-    public String GetPath(String path) {
-        return null;
+    public Object GetPath(String data, String path) {
+        try {
+            return JsonPath.read(data, path);
+        } catch (com.jayway.jsonpath.PathNotFoundException ex) {
+            return null;
+        }
+    }
+    @Override
+    public Object GetPath(Object data, String path) {
+        try {
+            return JsonPath.read(data, path);
+        } catch (com.jayway.jsonpath.PathNotFoundException ex) {
+            return null;
+        }
     }
 }

@@ -1,6 +1,6 @@
 package com.base2.kagura.contribute.rest.report.connector;
 
-import com.base2.kagura.contribute.rest.report.configmodel.RestReportConfig;
+import com.base2.kagura.contribute.rest.report.configmodel.Rest1ReportConfig;
 import com.base2.kagura.contribute.rest.report.configmodel.restmodel.ColumnSelect;
 import com.base2.kagura.contribute.rest.report.configmodel.restmodel.ErrorDetection;
 import com.base2.kagura.contribute.rest.report.configmodel.restmodel.RestConfig;
@@ -9,6 +9,7 @@ import com.base2.kagura.contribute.rest.report.connector.pathtools.Engine;
 import com.base2.kagura.contribute.rest.report.connector.pathtools.JsonPathV1Engine;
 import com.base2.kagura.core.report.connectors.ReportConnector;
 import com.mashape.unirest.http.Unirest;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -16,17 +17,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RestConnector extends ReportConnector {
+public class Rest1Connector extends ReportConnector {
     private List<Map<String, Object>> rows;
     private RestConfig restConfig;
     /**
-     * Does a shallow copy of the necessary restReportConfig values. Initializes the error structure.
+     * Does a shallow copy of the necessary rest1ReportConfig values. Initializes the error structure.
      *
-     * @param restReportConfig
+     * @param rest1ReportConfig
      */
-    protected RestConnector(RestReportConfig restReportConfig) {
-        super(restReportConfig);
-        this.restConfig = restReportConfig.getRestConfig();
+    protected Rest1Connector(Rest1ReportConfig rest1ReportConfig) {
+        super(rest1ReportConfig);
+        this.restConfig = rest1ReportConfig.getConfig();
     }
 
     @Override
@@ -39,8 +40,7 @@ public class RestConnector extends ReportConnector {
         Engine engine = null;
         this.rows = null;
         switch (restConfig.getPathTool()) {
-            case "jsonv1":
-            case "jsonpathv1":
+            case "json1":
                 engine = new JsonPathV1Engine();
                 break;
             default:
@@ -55,9 +55,11 @@ public class RestConnector extends ReportConnector {
             return;
         }
 
-        for (ErrorDetection errorDetection : restConfig.getErrorDetection()) {
-            if (engine.Match(data, errorDetection.getErrorPath())) {
-                getErrors().add(errorDetection.getErrorMessage());
+        if (restConfig.getErrorDetection() != null) {
+            for (ErrorDetection errorDetection : restConfig.getErrorDetection()) {
+                if (engine.Match(data, errorDetection.getErrorPath())) {
+                    getErrors().add(errorDetection.getErrorMessage());
+                }
             }
         }
 
@@ -65,25 +67,41 @@ public class RestConnector extends ReportConnector {
             return;
         }
 
-        List<Object> rowVars = engine.GetRowVars(data);
+        List<Object> rowVars = engine.GetArray(data, this.restConfig.getRowVariablePath());
 
         this.rows = new ArrayList<>();
         for (Object o : rowVars) {
             boolean skip = false;
-            for (RowFilter filter : restConfig.getFilters()) {
-                String result = engine.GetPath(filter.getPath());
-                if (StringUtils.isBlank(result)) {
-                    continue;
-                }
-                if (StringUtils.isBlank(filter.getMatchRule())) {
-                    skip = true;
-                    break;
+            if (restConfig.getFilters() != null) {
+                for (RowFilter filter : restConfig.getFilters()) {
+                    Object result = engine.GetPath(data, filter.getPath());
+//                    if (StringUtils.isBlank(result)) {
+//                        continue;
+//                    }
+                    if (StringUtils.isBlank(filter.getMatchRule())) {
+                        skip = true;
+                        break;
+                    }
                 }
             }
             if (skip) continue;
             Map<String, Object> row = new HashMap<>();
             for (ColumnSelect column : restConfig.getSelects()) {
-                row.put(column.getColumnName(), engine.GetPath(column.getPath()));
+                Object result;// = engine.GetPath(data, column.getPath());
+                String type = "";
+                if (column.getType() != null) {
+                    type = column.getType().toLowerCase();
+                }
+                switch (type) {
+                    case "root":
+                        result = engine.GetPath(data, column.getPath());
+                        break;
+                    case "row":
+                    case "":
+                    default:
+                        result = engine.GetPath(o, column.getPath());
+                }
+                row.put(column.getColumnName(), result);
             }
             this.rows.add(row);
 

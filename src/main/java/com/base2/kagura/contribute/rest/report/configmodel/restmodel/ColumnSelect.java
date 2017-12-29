@@ -2,6 +2,7 @@ package com.base2.kagura.contribute.rest.report.configmodel.restmodel;
 
 public class ColumnSelect {
     String columnName;
+    String type;
     String path;
 
     public String getColumnName() {
@@ -18,5 +19,13 @@ public class ColumnSelect {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

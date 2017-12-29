@@ -1,14 +1,13 @@
 package com.base2.kagura.contribute.rest.report.connector.pathtools;
 
-import com.base2.kagura.contribute.rest.report.configmodel.restmodel.ColumnSelect;
-
+import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 
 public interface Engine {
     boolean Match(String data, String errorPath);
 
-    List<Object> GetRowVars(String data);
+    List<Object> GetArray(String data, String rowVariablePath);
 
-    String GetPath(String path);
+    Object GetPath(Object data, String path);
+    Object GetPath(String data, String path);
 }
