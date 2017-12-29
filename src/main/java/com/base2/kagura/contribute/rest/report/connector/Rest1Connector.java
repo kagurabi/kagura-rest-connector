@@ -9,6 +9,7 @@ import com.base2.kagura.contribute.rest.report.connector.pathtools.Engine;
 import com.base2.kagura.contribute.rest.report.connector.pathtools.JsonPathV1Engine;
 import com.base2.kagura.core.report.connectors.ReportConnector;
 import com.mashape.unirest.http.Unirest;
+import net.minidev.json.JSONArray;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -69,18 +70,42 @@ public class Rest1Connector extends ReportConnector {
 
         List<Object> rowVars = engine.GetArray(data, this.restConfig.getRowVariablePath());
 
+        // TODO offset
+        // TODO pagination
+
         this.rows = new ArrayList<>();
         for (Object o : rowVars) {
             boolean skip = false;
             if (restConfig.getFilters() != null) {
                 for (RowFilter filter : restConfig.getFilters()) {
-                    Object result = engine.GetPath(data, filter.getPath());
-//                    if (StringUtils.isBlank(result)) {
-//                        continue;
-//                    }
+                    Object result;// = engine.GetPath(data, column.getPath());
+                    String type = "";
+                    if (filter.getType() != null) {
+                        type = filter.getType().toLowerCase();
+                    }
+                    switch (type) {
+                        case "root":
+                            result = engine.GetPath(data, filter.getPath());
+                            break;
+                        case "row":
+                        case "":
+                        default:
+                            result = engine.GetPath(o, filter.getPath());
+                    }
+                    if (result == null) {
+                        continue;
+                    }
+                    if ("".equals(result)) {
+                        continue;
+                    }
+                    if (result instanceof JSONArray && ((JSONArray)result).size() >= 1) {
+                        continue;
+                    }
                     if (StringUtils.isBlank(filter.getMatchRule())) {
                         skip = true;
                         break;
+                    } else {
+                        // TODO add scripting here
                     }
                 }
             }
@@ -105,9 +130,6 @@ public class Rest1Connector extends ReportConnector {
             }
             this.rows.add(row);
 
-            // TODO https://github.com/mvel/mvel
-            // TODO offset
-            // TODO pagination
         }
     }
 
