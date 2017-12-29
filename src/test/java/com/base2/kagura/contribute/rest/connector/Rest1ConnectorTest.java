@@ -123,4 +123,45 @@ public class Rest1ConnectorTest {
         }
     }
 
+    @Test
+    public void RestErrorTest() throws Exception {
+        byte[] serverResponse = "{\"message\":\"Could not authenticate\",\"took\":0.022,\"requestId\":\"8c4482d9-2631-453b-91ac-cb2dfd75ed86\"}".getBytes();
+        HttpServer httpServer = HttpServer.create(new InetSocketAddress(8000), 0);
+        httpServer.createContext("/api/endpoint", new HttpHandler() {
+            public void handle(HttpExchange exchange) throws IOException {
+                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, serverResponse.length);
+                exchange.getResponseBody().write(serverResponse);
+                exchange.close();
+            }
+        });
+        httpServer.start();
+
+        try {
+            ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+            ReportConfig reportConfig = null;
+            InputStream file = getClass().getClassLoader().getResourceAsStream("testParse3.yaml");
+            try {
+                reportConfig = mapper.readValue(file, ReportConfig.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new Exception(e);
+            }
+            reportConfig.setReportId("testParse2");
+            ReportConnector reportConnector = reportConfig.getReportConnector();
+            reportConnector.run(new HashMap<>());
+            List<Map<String, Object>> rows = reportConnector.getRows();
+            if (rows != null) {
+                throw new Exception("Not NULL result");
+            }
+            if (reportConnector.getErrors() == null || reportConnector.getErrors().size() == 0) {
+                throw new Exception("NULL or NO error");
+            }
+            for (String err : reportConnector.getErrors()) {
+                System.out.printf("Success! Error: %s\n", err);
+            }
+        } finally {
+            httpServer.stop(0);
+        }
+    }
+
 }

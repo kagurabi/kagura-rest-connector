@@ -1,0 +1,25 @@
+type: "Rest1"
+config:
+#  tokenSource:
+  endPointUrl: http://localhost:8000/api/endpoint
+  endPointMethod: GET
+#  endPointData:
+  errorDetection:
+    - errorPath: "$.message"
+      errorMessage: "Message exists!~"
+  pathTool: json1
+  rowVariablePath: '$.data'
+  selects:
+    - columnName: "Count"
+      type: "root"
+      path: "$.totalCount"
+    - columnName: "Name"
+      type: "row"
+      path: "$.username"
+    - columnName: "Role"
+      type: "row"
+      path: "$.role.name"
+  filters:
+    - matchRule: ""
+      type: "row"
+      path: '$.role[?(@.name=="Admin")].name'
