@@ -10,7 +10,6 @@ import com.base2.kagura.contribute.rest.report.connector.pathtools.JsonPathV1Eng
 import com.base2.kagura.core.report.connectors.ReportConnector;
 import com.mashape.unirest.http.Unirest;
 import net.minidev.json.JSONArray;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ public class Rest1Connector extends ReportConnector {
         }
         String data = null;
         try {
-            data = getData(restConfig.getEndPointUrl(), restConfig.getEndPointMethod(), restConfig.getEndPointData());
+            data = getData(restConfig.getEndPointUrl(), restConfig.getEndPointMethod(), restConfig.getEndPointData(), restConfig.getEndPointHeaders());
         } catch (Exception e) {
             getErrors().add(e.getMessage());
             return;
@@ -133,16 +132,16 @@ public class Rest1Connector extends ReportConnector {
         }
     }
 
-    private String getData(String endPointUrl, String endPointMethod, String endPointData) throws Exception {
+    private String getData(String endPointUrl, String endPointMethod, String endPointData, Map<String, String> headers) throws Exception {
         if (endPointMethod == null) throw new Exception("Uknown method");
         // TODO headers etc in MVEL
         switch (endPointMethod.toLowerCase()) {
             case "get":
-                return Unirest.get(endPointUrl).asString().getBody();
+                return Unirest.get(endPointUrl).headers(headers).asString().getBody();
             case "post":
-                return Unirest.post(endPointUrl).body(endPointData).asString().getBody();
+                return Unirest.post(endPointUrl).headers(headers).body(endPointData).asString().getBody();
             case "put":
-                return Unirest.post(endPointUrl).body(endPointData).asString().getBody();
+                return Unirest.post(endPointUrl).headers(headers).body(endPointData).asString().getBody();
             default:
                 throw new Exception("Uknown method");
         }

@@ -1,11 +1,13 @@
 package com.base2.kagura.contribute.rest.report.configmodel.restmodel;
 
 import java.util.List;
+import java.util.Map;
 
 public class RestConfig {
     String tokenSource;
     String endPointUrl;
     String endPointMethod;
+    Map<String, String> endPointHeaders;
     String endPointData;
     List<ErrorDetection> errorDetection;
     String pathTool;
@@ -83,5 +85,13 @@ public class RestConfig {
 
     public void setPathTool(String pathTool) {
         this.pathTool = pathTool;
+    }
+
+    public Map<String, String> getEndPointHeaders() {
+        return endPointHeaders;
+    }
+
+    public void setEndPointHeaders(Map<String, String> endPointHeaders) {
+        this.endPointHeaders = endPointHeaders;
     }
 }

@@ -7,7 +7,6 @@ import com.base2.kagura.core.report.connectors.ReportConnector;
 
 public class Rest1ReportConfig extends ReportConfig {
 
-
     RestConfig config;
 
     @Override

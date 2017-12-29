@@ -3,6 +3,8 @@ config:
 #  tokenSource:
   endPointUrl: http://localhost:8000/api/endpoint
   endPointMethod: GET
+  endPointHeaders:
+    Test1: '123'
 #  endPointData:
   errorDetection:
     - errorPath: "$.message"
