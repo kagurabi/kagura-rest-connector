@@ -17,6 +17,7 @@
     <kagura.version>2.3-SNAPSHOT</kagura.version>
     <log4j.version>1.2.17</log4j.version>
     <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+    <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
     <maven-bundle-plugin.version>3.3.0</maven-bundle-plugin.version>
   </properties>
 
