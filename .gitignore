@@ -1,8 +1,11 @@
-.idea
-*.iml
-*.iws
+/.idea
+/*.iml
+/*.iws
 /out/
 .idea_modules/
 atlassian-ide-plugin.xml
 *reduced-pom.xml
 pom.xml.versionsBackup
+src/test/java/com/base2/kagura/contribute/rest/connector/Rest1Connector2Test.java
+src/test/resources/testParse1_internal.yaml
+/target/
