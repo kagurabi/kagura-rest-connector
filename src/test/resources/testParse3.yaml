@@ -25,3 +25,9 @@ config:
     - matchRule: ""
       type: "row"
       path: '$.role[?(@.name=="Admin")].name'
+columns:
+  - name: Name
+  - name: Role
+  - name: Count
+extraOptions:
+  reportName: "Ops Genie"

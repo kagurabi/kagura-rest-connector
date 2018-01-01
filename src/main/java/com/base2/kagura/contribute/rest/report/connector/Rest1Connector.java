@@ -38,7 +38,7 @@ public class Rest1Connector extends ReportConnector {
     @Override
     protected void runReport(Map<String, Object> extra) {
         Engine engine = null;
-        this.rows = null;
+        this.rows = new ArrayList<>();
         switch (restConfig.getPathTool()) {
             case "json1":
                 engine = new JsonPathV1Engine();
@@ -72,7 +72,6 @@ public class Rest1Connector extends ReportConnector {
         // TODO offset
         // TODO pagination
 
-        this.rows = new ArrayList<>();
         for (Object o : rowVars) {
             boolean skip = false;
             if (restConfig.getFilters() != null) {
