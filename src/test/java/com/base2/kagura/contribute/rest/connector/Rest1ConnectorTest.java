@@ -150,8 +150,8 @@ public class Rest1ConnectorTest {
             ReportConnector reportConnector = reportConfig.getReportConnector();
             reportConnector.run(new HashMap<>());
             List<Map<String, Object>> rows = reportConnector.getRows();
-            if (rows != null) {
-                throw new Exception("Not NULL result");
+            if (rows == null) {
+                throw new Exception("NULL result");
             }
             if (reportConnector.getErrors() == null || reportConnector.getErrors().size() == 0) {
                 throw new Exception("NULL or NO error");
