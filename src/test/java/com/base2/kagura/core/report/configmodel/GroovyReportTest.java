@@ -16,11 +16,12 @@
 package com.base2.kagura.core.report.configmodel;
 
 
-import com.base2.kagura.core.storage.FileReportsProvider;
+import com.base2.kagura.core.KaguraUtil;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -34,10 +35,10 @@ import java.net.URL;
  */
 public class GroovyReportTest {
     @Test
-    public void getReports2Test() throws URISyntaxException, MalformedURLException {
+    public void getReports2Test() throws URISyntaxException, IOException {
         URL reportDirectory = this.getClass().getResource("/reportTest1/");
-        ReportsConfig actual = new FileReportsProvider(reportDirectory.getFile()).getReportsConfig();
-        Assert.assertThat(actual.getReports().get("groovy2"), IsInstanceOf.instanceOf(GroovyReportConfig.class));
-        ((GroovyReportConfig)actual.getReports().get("groovy2")).getGroovy();
+		ReportConfig groovy2 = KaguraUtil.LoadYamlFromRootUrl(reportDirectory, "groovy2");
+        Assert.assertThat(groovy2, IsInstanceOf.instanceOf(GroovyReportConfig.class));
+        ((GroovyReportConfig)groovy2).getGroovy();
     }
 }

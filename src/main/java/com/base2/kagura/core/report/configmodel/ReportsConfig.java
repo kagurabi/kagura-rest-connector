@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Container for reports loaded by a ReportsProvider. Also where you obtain errors from if you have issues loading
+ * Container for reports loaded by a ReportProvider. Also where you obtain errors from if you have issues loading
  * reports.
  * User: aubels
  * Date: 24/07/13

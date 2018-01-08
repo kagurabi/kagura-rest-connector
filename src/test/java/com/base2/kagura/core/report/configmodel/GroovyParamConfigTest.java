@@ -16,11 +16,14 @@
 package com.base2.kagura.core.report.configmodel;
 
 
-import com.base2.kagura.core.storage.FileReportsProvider;
+import com.base2.kagura.core.KaguraUtil;
+import org.hamcrest.Matchers;
 import org.hamcrest.core.IsInstanceOf;
+import org.hamcrest.core.IsNot;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -36,12 +39,11 @@ import static org.hamcrest.Matchers.*;
  */
 public class GroovyParamConfigTest {
     @Test
-    public void getReports1Test() throws URISyntaxException, MalformedURLException {
+    public void getReports1Test() throws URISyntaxException, IOException {
         URL reportDirectory = this.getClass().getResource("/reportTest1/");
-        ReportsConfig actual = new FileReportsProvider(reportDirectory.getFile()).getReportsConfig();
-        Assert.assertThat(actual.getErrors(), emptyCollectionOf(String.class));
-        Assert.assertThat(actual.getReports().get("groovy1"), IsInstanceOf.instanceOf(FakeReportConfig.class));
-        Assert.assertThat(actual.getReports().get("groovy1").getParamConfig().get(0).getValues(), contains((Object)"1","2","3","4","5"));
-        Assert.assertThat(actual.getErrors(), empty());
+        ReportConfig groovy1 = KaguraUtil.LoadYamlFromRootUrl(reportDirectory, "groovy1");
+        Assert.assertThat(groovy1, Matchers.notNullValue());
+        Assert.assertThat(groovy1, IsInstanceOf.instanceOf(FakeReportConfig.class));
+        Assert.assertThat(groovy1.getParamConfig().get(0).getValues(), contains((Object)"1","2","3","4","5"));
     }
 }

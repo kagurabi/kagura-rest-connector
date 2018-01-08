@@ -16,7 +16,7 @@
 package com.base2.kagura.core.report.configmodel;
 
 
-import com.base2.kagura.core.storage.FileReportsProvider;
+import com.base2.kagura.core.KaguraUtil;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsInstanceOf;
@@ -38,7 +38,7 @@ public class ReportsConfigTest {
     @Test
     public void getReports1Test() throws URISyntaxException, MalformedURLException {
         URL reportDirectory = this.getClass().getResource("/reportTest1/");
-        ReportsConfig actual = new FileReportsProvider(reportDirectory.getFile()).getReportsConfig();
+		ReportsConfig actual = KaguraUtil.PreloadYamlFromRootDirectory(reportDirectory.getFile());
         Assert.assertThat(actual.getErrors(), Matchers.emptyCollectionOf(String.class));
         Assert.assertThat(actual.getReports().get("fake1"), IsInstanceOf.instanceOf(FakeReportConfig.class));
         Assert.assertThat(actual.getReports().get("TestJDBCSQL"), IsInstanceOf.instanceOf(JDBCReportConfig.class));
