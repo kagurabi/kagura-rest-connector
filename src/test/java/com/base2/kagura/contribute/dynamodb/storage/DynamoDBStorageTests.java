@@ -6,6 +6,7 @@ import com.amazonaws.services.dynamodbv2.local.shared.access.AmazonDynamoDBLocal
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.base2.kagura.contribute.dynamodb.report.configmodel.DynamoDbReportConfigTests;
 import com.base2.kagura.contribute.dynamodb.report.connector.MovieSampleDataObject;
+import com.base2.kagura.core.report.configmodel.ReportConfig;
 import com.base2.kagura.core.report.configmodel.ReportsConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -91,12 +92,9 @@ public class DynamoDBStorageTests {
 		LOG.info("Loading report test1");
 		AmazonDynamoDB dynamoDB = setupDB();
 		DynamoDBStorage dynamoDBStorage = new DynamoDBStorage(dynamoDB, "reports");
-		ReportsConfig reportsConfig = new ReportsConfig();
-		String reportId = dynamoDBStorage.loadReport(reportsConfig, "test1");
-		Assert.assertThat(reportId, IsNull.notNullValue());
-		Assert.assertThat(reportsConfig.getReports().entrySet(), IsCollectionWithSize.hasSize(1));
-		Assert.assertThat(reportsConfig.getReport(reportId), IsNull.notNullValue());
-		Assert.assertThat(reportsConfig.getReport(reportId).getReportType(), IsEqual.equalTo("DynamoDB"));
+		ReportConfig reportConfig = dynamoDBStorage.LoadReport("test1");
+		Assert.assertThat(reportConfig, IsNull.notNullValue());
+		Assert.assertThat(reportConfig.getReportType(), IsEqual.equalTo("DynamoDB"));
 	}
 
 	@Test()
@@ -104,9 +102,9 @@ public class DynamoDBStorageTests {
 		LOG.info("Loading report testfail");
 		AmazonDynamoDB dynamoDB = setupDB();
 		DynamoDBStorage dynamoDBStorage = new DynamoDBStorage(dynamoDB, "reports");
-		ReportsConfig reportsConfig = new ReportsConfig();
-		String reportId = dynamoDBStorage.loadReport(reportsConfig, "testfail");
-		Assert.assertThat(reportId, IsNull.nullValue());
+		ReportConfig reportConfig = dynamoDBStorage.LoadReport("testfail");
+		Assert.assertThat(reportConfig, IsNull.notNullValue());
+
 	}
 	@Test()
 	public void LoadReportTestFailBadType() throws Exception {
@@ -114,7 +112,7 @@ public class DynamoDBStorageTests {
 		AmazonDynamoDB dynamoDB = setupDB();
 		DynamoDBStorage dynamoDBStorage = new DynamoDBStorage(dynamoDB, "reports");
 		ReportsConfig reportsConfig = new ReportsConfig();
-		String reportId = dynamoDBStorage.loadReport(reportsConfig, "test3");
-		Assert.assertThat(reportId, IsNull.nullValue());
+		ReportConfig reportConfig = dynamoDBStorage.LoadReport("test3");
+		Assert.assertThat(reportConfig, IsNull.notNullValue());
 	}
 }
