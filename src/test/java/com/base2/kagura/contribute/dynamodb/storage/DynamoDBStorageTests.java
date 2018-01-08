@@ -110,6 +110,6 @@ public class DynamoDBStorageTests {
 		AmazonDynamoDB dynamoDB = setupDB();
 		DynamoDBStorage dynamoDBStorage = new DynamoDBStorage(dynamoDB, "reports");
 		ReportConfig reportConfig = dynamoDBStorage.LoadReport("test3");
-		Assert.assertThat(reportConfig, IsNull.notNullValue());
+		Assert.assertThat(reportConfig, IsNull.nullValue());
 	}
 }
