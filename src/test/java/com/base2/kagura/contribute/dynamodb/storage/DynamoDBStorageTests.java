@@ -7,10 +7,8 @@ import com.amazonaws.services.dynamodbv2.model.*;
 import com.base2.kagura.contribute.dynamodb.report.configmodel.DynamoDbReportConfigTests;
 import com.base2.kagura.contribute.dynamodb.report.connector.MovieSampleDataObject;
 import com.base2.kagura.core.report.configmodel.ReportConfig;
-import com.base2.kagura.core.report.configmodel.ReportsConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import org.hamcrest.collection.IsCollectionWithSize;
 import org.hamcrest.core.IsCollectionContaining;
 import org.hamcrest.core.IsEqual;
 import org.hamcrest.core.IsNull;
@@ -111,7 +109,6 @@ public class DynamoDBStorageTests {
 		LOG.info("Loading report test3");
 		AmazonDynamoDB dynamoDB = setupDB();
 		DynamoDBStorage dynamoDBStorage = new DynamoDBStorage(dynamoDB, "reports");
-		ReportsConfig reportsConfig = new ReportsConfig();
 		ReportConfig reportConfig = dynamoDBStorage.LoadReport("test3");
 		Assert.assertThat(reportConfig, IsNull.notNullValue());
 	}
