@@ -10,14 +10,21 @@ import com.base2.kagura.contribute.rest.report.connector.pathtools.JsonPathV1Eng
 import com.base2.kagura.core.report.connectors.ReportConnector;
 import com.mashape.unirest.http.Unirest;
 import net.minidev.json.JSONArray;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jtwig.JtwigModel;
+import org.jtwig.JtwigTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Rest1Connector extends ReportConnector {
+    final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private List<Map<String, Object>> rows;
     private RestConfig restConfig;
     /**
@@ -74,6 +81,9 @@ public class Rest1Connector extends ReportConnector {
 
         for (Object o : rowVars) {
             boolean skip = false;
+            JtwigModel model = JtwigModel.newModel()
+                .with("root", data)
+                .with("row", o);
             if (restConfig.getFilters() != null) {
                 for (RowFilter filter : restConfig.getFilters()) {
                     Object result;// = engine.GetPath(data, column.getPath());
@@ -81,14 +91,16 @@ public class Rest1Connector extends ReportConnector {
                     if (filter.getType() != null) {
                         type = filter.getType().toLowerCase();
                     }
+                    JtwigTemplate filterPathTemplate = JtwigTemplate.inlineTemplate(filter.getPath());
+                    String filterPath = filterPathTemplate.render(model);
                     switch (type) {
                         case "root":
-                            result = engine.GetPath(data, filter.getPath());
+                            result = engine.GetPath(data, filterPath);
                             break;
                         case "row":
                         case "":
                         default:
-                            result = engine.GetPath(o, filter.getPath());
+                            result = engine.GetPath(o, filterPath);
                     }
                     if (result == null) {
                         continue;
@@ -99,11 +111,19 @@ public class Rest1Connector extends ReportConnector {
                     if (result instanceof JSONArray && ((JSONArray)result).size() >= 1) {
                         continue;
                     }
-                    if (StringUtils.isBlank(filter.getMatchRule())) {
+                    if (filter.getMatchRule() == null) {
                         skip = true;
                         break;
                     } else {
-                        // TODO add scripting here
+                        if (StringUtils.isNotBlank(filter.getMatchRule().getJtwig())) {
+                            JtwigTemplate template = JtwigTemplate.inlineTemplate(filter.getMatchRule().getJtwig());
+                            String filterResult = template.render(model);
+                            if (!BooleanUtils.toBoolean(filterResult)) {
+                                skip = true;
+                            }
+                        } else {
+                            logger.info("Unnecessary empty rule");
+                        }
                     }
                 }
             }
@@ -112,17 +132,33 @@ public class Rest1Connector extends ReportConnector {
             for (ColumnSelect column : restConfig.getSelects()) {
                 Object result;// = engine.GetPath(data, column.getPath());
                 String type = "";
+                JtwigTemplate columnPathTemplate = JtwigTemplate.inlineTemplate(column.getPath());
+                String columnPath = columnPathTemplate.render(model);
+
                 if (column.getType() != null) {
                     type = column.getType().toLowerCase();
                 }
                 switch (type) {
                     case "root":
-                        result = engine.GetPath(data, column.getPath());
+                        result = engine.GetPath(data, columnPath);
                         break;
                     case "row":
                     case "":
                     default:
-                        result = engine.GetPath(o, column.getPath());
+                        result = engine.GetPath(o, columnPath);
+                }
+                if (column.getTransformer() != null) {
+                    if (StringUtils.isNotBlank(column.getTransformer().getJtwig())) {
+                        JtwigModel transformModel = JtwigModel.newModel()
+                        .with("result", result)
+                        .with("root", data)
+                        .with("row", o);
+                        JtwigTemplate columnTransformTemplate = JtwigTemplate.inlineTemplate(column.getTransformer().getJtwig());
+                        String transformedResult = columnTransformTemplate.render(transformModel);
+                        result = transformedResult;
+                    } else {
+                        logger.info("Unnecessary empty transformer");
+                    }
                 }
                 row.put(column.getColumnName(), result);
             }

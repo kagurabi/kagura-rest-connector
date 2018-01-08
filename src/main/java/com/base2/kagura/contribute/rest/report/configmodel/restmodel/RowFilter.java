@@ -1,14 +1,13 @@
 package com.base2.kagura.contribute.rest.report.configmodel.restmodel;
 
 public class RowFilter extends PathTypeBase {
-    String matchRule;
+    ScriptChoice matchRule;
 
-    public String getMatchRule() {
+    public ScriptChoice getMatchRule() {
         return matchRule;
     }
 
-    public void setMatchRule(String matchRule) {
+    public void setMatchRule(ScriptChoice matchRule) {
         this.matchRule = matchRule;
     }
-
 }

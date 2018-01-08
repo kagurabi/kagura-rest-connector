@@ -22,7 +22,7 @@ config:
       type: "row"
       path: "$.role.name"
   filters:
-    - matchRule: ""
+    - matchRule:
       type: "row"
       path: '$.role[?(@.name=="Admin")].name'
 columns:

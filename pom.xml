@@ -103,6 +103,15 @@
         </exclusion>
       </exclusions>
     </dependency>
+
+    <!--Specific connector dependencies-->
+    <!-- https://mvnrepository.com/artifact/org.jtwig/jtwig-core -->
+    <dependency>
+      <groupId>org.jtwig</groupId>
+      <artifactId>jtwig-core</artifactId>
+      <version>5.86.1.RELEASE</version>
+    </dependency>
+
     <dependency>
       <groupId>com.jayway.jsonpath</groupId>
       <artifactId>json-path</artifactId>
