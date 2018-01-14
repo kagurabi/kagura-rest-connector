@@ -11,9 +11,11 @@ import com.amazonaws.util.StringInputStream;
 import com.base2.kagura.core.KaguraUtil;
 import com.base2.kagura.core.report.configmodel.ReportConfig;
 import com.base2.kagura.core.ReportProvider;
+import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -38,14 +40,22 @@ public class DynamoDBStorage implements ReportProvider {
 		this.reportsTable = reportsTable;
 	}
 
-	public ReportConfig LoadReport(String reportId) throws Exception {
+	public ReportConfig LoadReport(String reportId) throws IOException {
 		GetItemResult itemResult = dynamoDB.getItem(this.reportsTable, new HashMap<String, AttributeValue>() {{ put("reportId", StringToStringMarshaller.instance().marshall(reportId)); }});
 		Map<String, AttributeValue> item = itemResult.getItem();
 
 		if (item != null && reportId.equals(item.get("reportId").getS())) {
 			String reportYaml = item.get("reportYaml").getS();
 			LOG.debug("Got report " + reportId);
-			ReportConfig report = KaguraUtil.LoadYaml(new StringInputStream(reportYaml), reportId);
+			ReportConfig report = null;
+			try {
+				report = KaguraUtil.LoadYaml(new StringInputStream(reportYaml), reportId);
+			} catch (InvalidTypeIdException e) {
+				getErrors().add("Error with type: " + e.getTypeId());
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw e;
+			}
 			if (report != null) {
 				return report;
 			} else {
