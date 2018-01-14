@@ -33,11 +33,13 @@ public class DynamoDBStorage implements ReportProvider {
 		dynamoDB = new AmazonDynamoDBClient(credentials);
 		this.reportsTable = reportsTable;
 		dynamoDB.setRegion(RegionUtils.getRegion(region));
+		resetErrors();
 	}
 
 	public DynamoDBStorage(AmazonDynamoDB dynamoDB, String reportsTable) {
 		this.dynamoDB = dynamoDB;
 		this.reportsTable = reportsTable;
+		resetErrors();
 	}
 
 	public ReportConfig LoadReport(String reportId) throws IOException {
