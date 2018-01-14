@@ -36,6 +36,8 @@ public class KaguraUtil {
 		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 		ReportConfig reportConfig = null;
 		reportConfig = mapper.readValue(reportStream, ReportConfig.class);
+		if (reportConfig == null)
+			return null;
 		reportConfig.setReportId(reportId);
 		return reportConfig;
 	}
