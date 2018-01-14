@@ -43,7 +43,7 @@ public class DynamoDBStorage implements ReportProvider {
 	public ReportConfig LoadReport(String reportId) throws IOException {
 		GetItemResult itemResult = dynamoDB.getItem(this.reportsTable, new HashMap<String, AttributeValue>() {{ put("reportId", StringToStringMarshaller.instance().marshall(reportId)); }});
 		Map<String, AttributeValue> item = itemResult.getItem();
-
+		resetErrors();
 		if (item != null && reportId.equals(item.get("reportId").getS())) {
 			String reportYaml = item.get("reportYaml").getS();
 			LOG.debug("Got report " + reportId);
