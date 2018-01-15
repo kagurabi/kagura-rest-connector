@@ -9,6 +9,8 @@
     <groupId>com.kagurabi</groupId>
     <artifactId>kagura-core</artifactId>
     <name>kagura-core</name>
+    <description>Kagura core SDK</description>
+    <url>http://www.kagurabi.com/</url>
 
     <licenses>
         <license>
