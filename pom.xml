@@ -8,6 +8,8 @@
     <name>kagura-resources</name>
     <packaging>bundle</packaging>
     <version>2.4-SNAPSHOT</version>
+    <description>Kagura resources repo</description>
+    <url>http://www.kagurabi.com/</url>
 
     <licenses>
         <license>
