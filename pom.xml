@@ -11,7 +11,7 @@
 
     <name>kagura-bom</name>
     <description>The base POM of the Kagura project</description>
-    <url>https://kagura.atlassian.net/</url>
+    <url>https://www.kagurabi.com/</url>
 
     <licenses>
         <license>
