@@ -98,6 +98,8 @@
         <jgit.version>3.1.0.201310021548-r</jgit.version>
         <ivy.version>2.4.0</ivy.version>
         <xml-apis.version>2.0.2</xml-apis.version>
+        <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
+        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
     </properties>
 
     <dependencyManagement>
