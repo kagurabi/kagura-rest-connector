@@ -10,6 +10,9 @@
     <name>kagura-rest-api</name>
     <version>2.7-SNAPSHOT</version>
 
+    <description>The specification for the rest API to talk to other components</description>
+    <url>https://www.kagurabi.com/</url>
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
