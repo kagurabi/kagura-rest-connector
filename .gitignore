@@ -9,3 +9,5 @@ pom.xml.versionsBackup
 src/test/java/com/base2/kagura/contribute/rest/connector/Rest1Connector2Test.java
 src/test/resources/testParse1_internal.yaml
 /target/
+pom.xml.releaseBackup
+release.properties
