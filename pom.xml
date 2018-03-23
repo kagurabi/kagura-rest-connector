@@ -6,7 +6,7 @@
 
   <groupId>com.kagurabi.contrib</groupId>
   <artifactId>kaugra-rest-connector</artifactId>
-  <version>1.7-SNAPSHOT</version>
+  <version>1.8-SNAPSHOT</version>
 
   <name>kaugra-rest-connector</name>
   <description>Enabled Kagura to talk to simple JSON based rest services</description>
